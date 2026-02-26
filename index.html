@@ -31,13 +31,11 @@
       cursor: none;
     }
 
-    /* Hide custom cursor on touch devices */
     @media (hover: none) and (pointer: coarse) {
       body { cursor: auto; }
       .cursor, .cursor-ring { display: none; }
     }
 
-    /* Custom cursor */
     .cursor {
       width: 12px; height: 12px;
       background: var(--accent);
@@ -58,7 +56,6 @@
       transition: all 0.25s cubic-bezier(.2,.8,.2,1);
     }
 
-    /* Noise overlay */
     body::before {
       content: '';
       position: fixed;
@@ -69,7 +66,7 @@
       opacity: 0.4;
     }
 
-    /* ── NAV ── */
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 500;
@@ -107,7 +104,6 @@
     .nav-links a:hover { color: var(--accent); }
     .nav-links a:hover::after { width: 100%; }
 
-    /* Hamburger menu */
     .nav-hamburger {
       display: none;
       flex-direction: column;
@@ -130,7 +126,6 @@
     .nav-hamburger.open span:nth-child(2) { opacity: 0; }
     .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* Mobile nav overlay */
     .nav-mobile-overlay {
       display: none;
       position: fixed;
@@ -155,7 +150,7 @@
     }
     .nav-mobile-overlay a:hover { color: var(--accent); }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
       min-height: 100vh;
       display: grid;
@@ -244,11 +239,13 @@
       transform: translateY(-2px);
     }
 
-    /* Hero right - code window */
+    /* Hero right */
     .hero-right {
       display: flex; justify-content: center; align-items: center;
       position: relative; z-index: 1;
     }
+
+    /* ── CODE WINDOW (desktop default) ── */
     .code-window {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -294,7 +291,174 @@
     .ac { color: var(--accent); }
     .type { color: #ffcb6b; }
 
-    /* ── STATS ── */
+    /* ── PICTURE WINDOW (mobile only) ── */
+    .picture-window {
+      display: none; /* hidden on desktop */
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 340px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+      animation: float 6s ease-in-out infinite;
+      position: relative;
+    }
+    .picture-window-bar {
+      background: var(--bg3);
+      padding: 0.6rem 0.9rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .picture-window-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-left: 0.4rem;
+    }
+    .picture-window-body {
+      position: relative;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0d1117 0%, #1a1040 40%, #0d1f2d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Glowing orb bg */
+    .picture-window-body::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,245,212,0.12) 0%, rgba(124,58,237,0.08) 50%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Avatar circle */
+    .avatar-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem 1.5rem;
+    }
+    .avatar-ring {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+      padding: 3px;
+      animation: spin-ring 8s linear infinite;
+      box-shadow: 0 0 30px rgba(0,245,212,0.25), 0 0 60px rgba(124,58,237,0.15);
+    }
+    @keyframes spin-ring {
+      0% { box-shadow: 0 0 20px rgba(0,245,212,0.3), 0 0 50px rgba(124,58,237,0.1); }
+      50% { box-shadow: 0 0 40px rgba(0,245,212,0.5), 0 0 80px rgba(124,58,237,0.25); }
+      100% { box-shadow: 0 0 20px rgba(0,245,212,0.3), 0 0 50px rgba(124,58,237,0.1); }
+    }
+    .avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.2rem;
+      overflow: hidden;
+    }
+    .avatar-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    /* Name + role below avatar */
+    .avatar-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+    .avatar-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* Skill badges row */
+    .avatar-badges {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 0.25rem;
+    }
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      border: 1px solid;
+    }
+    .badge-a {
+      background: rgba(0,245,212,0.08);
+      color: var(--accent);
+      border-color: rgba(0,245,212,0.25);
+    }
+    .badge-b {
+      background: rgba(124,58,237,0.1);
+      color: #a78bfa;
+      border-color: rgba(124,58,237,0.3);
+    }
+    .badge-c {
+      background: rgba(247,37,133,0.08);
+      color: #f472b6;
+      border-color: rgba(247,37,133,0.25);
+    }
+
+    /* Status indicator */
+    .picture-status {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--bg3);
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      animation: pulse-green 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-green {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,245,212,0.4); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0,245,212,0); }
+    }
+    .status-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .status-text strong { color: var(--accent); }
+
+    /* STATS */
     .stats {
       padding: 4rem;
       display: grid;
@@ -324,7 +488,7 @@
       letter-spacing: 0.1em;
     }
 
-    /* ── SECTION ── */
+    /* SECTION */
     section { padding: 6rem 4rem; }
     .section-header { margin-bottom: 3.5rem; }
     .section-label {
@@ -341,7 +505,7 @@
       letter-spacing: -0.02em;
     }
 
-    /* ── SKILLS ── */
+    /* SKILLS */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -389,7 +553,7 @@
       transition: width 1.5s cubic-bezier(.2,.8,.2,1);
     }
 
-    /* ── PROJECTS ── */
+    /* PROJECTS */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -415,10 +579,7 @@
       overflow: hidden;
       display: flex; align-items: center; justify-content: center;
     }
-    .project-thumb-bg {
-      position: absolute; inset: 0;
-      opacity: 0.6;
-    }
+    .project-thumb-bg { position: absolute; inset: 0; opacity: 0.6; }
     .proj-a .project-thumb-bg { background: linear-gradient(135deg, #0d1117, #1a1040); }
     .proj-b .project-thumb-bg { background: linear-gradient(135deg, #0d1117, #140d24); }
     .proj-c .project-thumb-bg { background: linear-gradient(135deg, #0d1117, #0d1f2d); }
@@ -435,17 +596,8 @@
       border: 1px solid rgba(124,58,237,0.3);
       letter-spacing: 0.05em;
     }
-    .project-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .project-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 1rem;
-    }
+    .project-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
     .project-links { display: flex; gap: 1rem; }
     .project-link {
       font-family: 'JetBrains Mono', monospace;
@@ -458,7 +610,7 @@
     }
     .project-link:hover { opacity: 0.7; }
 
-    /* ── EXPERIENCE ── */
+    /* EXPERIENCE */
     .timeline { position: relative; padding-left: 2rem; }
     .timeline::before {
       content: '';
@@ -466,10 +618,7 @@
       width: 1px;
       background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
     }
-    .timeline-item {
-      position: relative;
-      padding: 0 0 3rem 2.5rem;
-    }
+    .timeline-item { position: relative; padding: 0 0 3rem 2.5rem; }
     .timeline-item::before {
       content: '';
       position: absolute; left: -0.35rem; top: 0.35rem;
@@ -485,44 +634,19 @@
       letter-spacing: 0.1em;
       margin-bottom: 0.35rem;
     }
-    .timeline-role {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.2rem;
-    }
-    .timeline-company {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
-    }
-    .timeline-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
+    .timeline-role { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .timeline-company { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .timeline-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
 
-    /* ── CONTACT ── */
+    /* CONTACT */
     #contact {
       background: var(--bg2);
       border-top: 1px solid var(--border);
     }
-    .contact-inner {
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: center;
-    }
+    .contact-inner { max-width: 600px; margin: 0 auto; text-align: center; }
     .contact-inner h2 { margin-bottom: 1rem; }
-    .contact-inner p {
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 2rem;
-    }
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
+    .contact-inner p { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
     .contact-link {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
@@ -534,10 +658,7 @@
       letter-spacing: 0.05em;
       transition: all 0.2s;
     }
-    .contact-link:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
 
     /* Footer */
     footer {
@@ -558,19 +679,13 @@
     }
     .fade-in.visible { opacity: 1; transform: none; }
 
-    /* ── SOCIAL PANELS ── */
+    /* SOCIALS */
     .socials-section {
       padding: 6rem 4rem;
       background: var(--bg);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
-    /* .socials-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 3.5rem;
-    } */
 
     /* SPOTIFY PANEL */
     .spotify-panel {
@@ -619,181 +734,9 @@
       background: #1ed760;
       animation: pulse-green 1.5s ease-in-out infinite;
     }
-    @keyframes pulse-green {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(30,215,96,0.4); }
-      50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(30,215,96,0); }
-    }
+    .spotify-embed-wrap iframe { display: block; }
 
-    /* INSTAGRAM PANEL */
-    .instagram-panel {
-      background: #0d0d0d;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-    }
-    .instagram-panel::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at top right, rgba(247,37,133,0.07) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .ig-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .ig-brand {
-      display: flex; align-items: center; gap: 0.6rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .ig-logo {
-      width: 20px; height: 20px;
-      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.6rem;
-      color: white;
-    }
-    .ig-gradient-text {
-      background: linear-gradient(90deg, #f09433, #dc2743, #bc1888);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .ig-follow-btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
-      color: white;
-      border: none;
-      padding: 0.35rem 0.9rem;
-      border-radius: 20px;
-      cursor: pointer;
-      letter-spacing: 0.05em;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .ig-follow-btn:hover { opacity: 0.85; transform: scale(1.03); }
-    .ig-profile {
-      padding: 1.25rem 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .ig-avatar {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
-      padding: 2px;
-      flex-shrink: 0;
-    }
-    .ig-avatar-inner {
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      background: #1a1a2e;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem;
-    }
-    .ig-user-info { flex: 1; min-width: 0; }
-    .ig-username {
-      font-weight: 700;
-      font-size: 0.95rem;
-      margin-bottom: 0.15rem;
-    }
-    .ig-fullname {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .ig-stats {
-      display: flex; gap: 1.5rem;
-      padding: 0 1.5rem 1.25rem;
-    }
-    .ig-stat { text-align: center; }
-    .ig-stat-num {
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 0.1rem;
-    }
-    .ig-stat-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .ig-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      margin: 0 1.5rem 1.25rem;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .ig-post {
-      aspect-ratio: 1;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .ig-post::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0);
-      transition: background 0.2s;
-    }
-    .ig-post:hover::after { background: rgba(0,0,0,0.35); }
-    .p1 { background: linear-gradient(135deg, #1a1a3e, #2d1b69); }
-    .p2 { background: linear-gradient(135deg, #0d1117, #1a1040); }
-    .p3 { background: linear-gradient(135deg, #0d1f2d, #003355); }
-    .p4 { background: linear-gradient(135deg, #2d0a1e, #4a0025); }
-    .p5 { background: linear-gradient(135deg, #1a2d0d, #1a3d10); }
-    .p6 { background: linear-gradient(135deg, #2d2d0a, #3d3d10); }
-    .ig-footer {
-      border-top: 1px solid rgba(255,255,255,0.05);
-      padding: 0.85rem 1.5rem;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .ig-new-post {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--muted);
-    }
-    .new-badge {
-      background: linear-gradient(135deg, #f09433, #dc2743);
-      color: white;
-      padding: 0.15rem 0.45rem;
-      border-radius: 10px;
-      font-size: 0.6rem;
-      font-weight: 700;
-    }
-    .ig-view-all {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: #bc1888;
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: opacity 0.2s;
-    }
-    .ig-view-all:hover { opacity: 0.7; }
-
-    /* Spotify embed */
-    .spotify-embed-wrap iframe {
-      display: block;
-    }
-
-    /* ── RESPONSIVE ── */
-
-    /* Tablet */
+    /* RESPONSIVE */
     @media (max-width: 1024px) {
       nav { padding: 1rem 2rem; }
       .hero { padding: 8rem 2rem 4rem; gap: 2rem; }
@@ -802,15 +745,11 @@
       .stats { padding: 0; }
     }
 
-    /* Mobile landscape / small tablet */
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }
-
-      /* Show hamburger, hide links */
       .nav-hamburger { display: flex; }
       .nav-links { display: none; }
 
-      /* Hero: single column */
       .hero {
         grid-template-columns: 1fr;
         padding: 6rem 1.5rem 3rem;
@@ -821,72 +760,42 @@
       .hero-right {
         display: flex;
         margin-top: 2.5rem;
-      }
-      .code-window {
-        font-size: 0.75rem;
+        justify-content: center;
       }
 
-      /* Stats: 2x2 */
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-        padding: 0;
-      }
+      /* On tablet/mobile: hide code window, show picture window */
+      .code-window { display: none; }
+      .picture-window { display: block; }
 
-      /* Socials grid: single col */
+      .stats { grid-template-columns: repeat(2, 1fr); padding: 0; }
       .socials-grid { grid-template-columns: 1fr; }
-
-      /* Skills: 2 cols */
       .skills-grid { grid-template-columns: repeat(2, 1fr); }
-
-      /* Projects: single col */
       .projects-grid { grid-template-columns: 1fr; }
-
       section { padding: 4rem 1.5rem; }
       .socials-section { padding: 4rem 1.5rem; }
     }
 
-    /* Mobile portrait */
     @media (max-width: 480px) {
       nav { padding: 0.9rem 1.25rem; }
       .nav-logo { font-size: 0.85rem; }
-
       h1 { font-size: 2rem; }
       .hero-desc { font-size: 0.95rem; }
       .hero-btns { gap: 0.75rem; }
       .btn { padding: 0.75rem 1.5rem; font-size: 0.72rem; }
-
       .hero { padding: 5.5rem 1.25rem 3rem; }
       section { padding: 3.5rem 1.25rem; }
       .socials-section { padding: 3.5rem 1.25rem; }
-
-      /* Hide code window on very small screens */
-      .hero-right { display: none; }
-
-      /* Skills: 2 cols tight */
       .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
       .skill-card { padding: 1rem 0.75rem; }
-
-      /* Timeline adjust */
       .timeline { padding-left: 1.25rem; }
       .timeline-item { padding-left: 1.5rem; }
       .timeline-role { font-size: 1.05rem; }
-
-      /* Stats single col on very small */
       .stat-num { font-size: 2.2rem; }
-
-      /* Contact links: full width on tiny screens */
       .contact-links { flex-direction: column; align-items: center; }
       .contact-link { width: 100%; max-width: 260px; text-align: center; }
-
-      /* Social panels inner padding reduce */
-      .ig-profile { padding: 1rem 1.25rem; }
-      .ig-stats { padding: 0 1.25rem 1rem; gap: 1rem; }
-      .ig-grid { margin: 0 1.25rem 1rem; }
-      .ig-footer { padding: 0.75rem 1.25rem; }
-      .spotify-header { padding: 1rem 1.25rem; }
+      .picture-window { max-width: 280px; }
     }
 
-    /* Extra small */
     @media (max-width: 360px) {
       .skills-grid { grid-template-columns: 1fr; }
       h2 { font-size: 1.6rem; }
@@ -901,7 +810,6 @@
 <!-- Mobile Nav Overlay -->
 <div class="nav-mobile-overlay" id="mobileNav">
   <a href="#skills" onclick="closeMobileNav()">Skills</a>
-  <a href="#projects" onclick="closeMobileNav()" style="display: none;">Projects</a>
   <a href="#experience" onclick="closeMobileNav()">Experience</a>
   <a href="#contact" onclick="closeMobileNav()">Contact</a>
 </div>
@@ -911,31 +819,27 @@
   <div class="nav-logo">whoayou<span>.dev</span></div>
   <div class="nav-links">
     <a href="#skills">Skills</a>
-    <a href="#projects" style="display: none;">Projects</a>
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
   </div>
   <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-left fade-in">
-    <div class="hero-label" style="display: none;">Available for Work</div>
     <h1>Halo, saya<br /><span class="highlight">Muhammad Wahyu Nurdin</span><br />Web Developer.</h1>
-    <p class="hero-desc">
-      Saya Manusia biasa yang suka ngoding, ngopi, dan ngegame. 👨‍💻 🚀
-    </p>
+    <p class="hero-desc">Saya Manusia biasa yang suka ngoding, ngopi, dan ngegame. 👨‍💻 🚀</p>
     <div class="hero-btns">
-      <!-- <a href="#projects" class="btn btn-primary">Lihat  </a> -->
       <a href="#contact" class="btn btn-primary">Hubungi Saya →</a>
     </div>
   </div>
+
   <div class="hero-right fade-in">
+
+    <!-- CODE WINDOW: visible on desktop (>900px) -->
     <div class="code-window">
       <div class="window-bar">
         <div class="dot dot-r"></div>
@@ -947,11 +851,6 @@
         <div><span class="ln">01</span><span class="kw">const</span> <span class="fn">developer</span> = {</div>
         <div><span class="ln">02</span>&nbsp;&nbsp;<span class="ac">name</span>: <span class="str">"Muhammad Wahyu Nurdin"</span>,</div>
         <div><span class="ln">03</span>&nbsp;&nbsp;<span class="ac">role</span>: <span class="str">"Web Developer"</span>,</div>
-        <!-- <div><span class="ln">04</span>&nbsp;&nbsp;<span class="ac">experience</span>: <span class="num">3</span>,</div> -->
-        <!-- <div><span class="ln">05</span>&nbsp;&nbsp;<span class="ac">stack</span>: [</div>
-        <div><span class="ln">06</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"React"</span>, <span class="str">"TypeScript"</span>,</div>
-        <div><span class="ln">07</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Node.js"</span>, <span class="str">"PostgreSQL"</span>,</div>
-        <div><span class="ln">08</span>&nbsp;&nbsp;],</div> -->
         <div><span class="ln">09</span>&nbsp;&nbsp;<span class="ac">available</span>: <span class="kw">true</span>,</div>
         <div><span class="ln">10</span>};</div>
         <div>&nbsp;</div>
@@ -959,16 +858,43 @@
         <div><span class="ln">13</span><span class="fn">export default</span> <span class="ac">developer</span>;</div>
       </div>
     </div>
+
+    <!-- PICTURE WINDOW: visible on mobile/tablet (<900px) -->
+    <div class="picture-window">
+      <div class="picture-window-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="picture-window-title">profile.jpg</span>
+      </div>
+      <div class="picture-window-body">
+        <div class="avatar-wrap">
+          <div class="avatar-ring">
+            <div class="avatar-inner">
+              <!-- Ganti src="" dengan URL foto kamu jika ada -->
+              <!-- <img src="URL_FOTO_KAMU" alt="Muhammad Wahyu Nurdin" /> -->
+              <img src="myphoto.jpeg" alt="Muhammad Wahyu Nurdin" />
+            </div>
+          </div>
+          <div class="avatar-name">Muhammad Wahyu Nurdin</div>
+          <div class="avatar-role">Web Developer</div>
+          <div class="avatar-badges">
+            <span class="badge badge-a">React</span>
+            <span class="badge badge-b">Laravel</span>
+            <span class="badge badge-a">Tailwind</span>
+            <span class="badge badge-c">PHP</span>
+            <span class="badge badge-b">MySQL</span>
+          </div>
+        </div>
+      </div>
+      <div class="picture-status">
+        <div class="status-dot"></div>
+        <span class="status-text"><strong>Available</strong> · Open for new projects</span>
+      </div>
+    </div>
+
   </div>
 </section>
-
-<!-- STATS -->
-<div class="stats" style="display: none;">
-  <div class="stat fade-in"><div class="stat-num">3+</div><div class="stat-label">Tahun Pengalaman</div></div>
-  <div class="stat fade-in"><div class="stat-num">24</div><div class="stat-label">Proyek Selesai</div></div>
-  <div class="stat fade-in"><div class="stat-num">12</div><div class="stat-label">Klien Puas</div></div>
-  <div class="stat fade-in"><div class="stat-num">99%</div><div class="stat-label">Uptime Target</div></div>
-</div>
 
 <!-- SKILLS -->
 <section id="skills" style="background: var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
@@ -978,100 +904,39 @@
   </div>
   <div class="skills-grid">
     <div class="skill-card fade-in">
-      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React Logo" /></div>
+      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" /></div>
       <div class="skill-name">React</div>
       <div class="skill-level"><div class="skill-level-fill" data-width="80%" style="width:0"></div></div>
     </div>
     <div class="skill-card fade-in">
-      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP Logo" /></div>
+      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" /></div>
       <div class="skill-name">PHP</div>
       <div class="skill-level"><div class="skill-level-fill" data-width="90%" style="width:0"></div></div>
     </div>
     <div class="skill-card fade-in">
-      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js Logo" /></div>
+      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" /></div>
       <div class="skill-name">Node.js</div>
       <div class="skill-level"><div class="skill-level-fill" data-width="50%" style="width:0"></div></div>
     </div>
     <div class="skill-card fade-in">
-      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySql Logo" /></div>
-      <div class="skill-name">MySql</div>
+      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" /></div>
+      <div class="skill-name">MySQL</div>
       <div class="skill-level"><div class="skill-level-fill" data-width="75%" style="width:0"></div></div>
     </div>
     <div class="skill-card fade-in">
-      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap Logo" /></div>
-      <div class="skill-name">Bootstrap Css</div>
+      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" /></div>
+      <div class="skill-name">Bootstrap CSS</div>
       <div class="skill-level"><div class="skill-level-fill" data-width="70%" style="width:0"></div></div>
     </div>
     <div class="skill-card fade-in">
-      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel Logo" /></div>
+      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel" /></div>
       <div class="skill-name">Laravel</div>
       <div class="skill-level"><div class="skill-level-fill" data-width="65%" style="width:0"></div></div>
     </div>
     <div class="skill-card fade-in">
-      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS Logo" /></div>
+      <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" /></div>
       <div class="skill-name">Tailwind CSS</div>
       <div class="skill-level"><div class="skill-level-fill" data-width="92%" style="width:0"></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects" style=" display: none; background: var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-  <div class="section-header fade-in">
-    <div class="section-label">// Portofolio</div>
-    <h2>Proyek Pilihan</h2>
-  </div>
-  <div class="projects-grid" style="display: none;">
-    <div class="project-card proj-a fade-in">
-      <div class="project-thumb">
-        <div class="project-thumb-bg"></div>
-        <div class="project-thumb-icon">🛒</div>
-      </div>
-      <div class="project-body">
-        <div class="project-tags">
-          <span class="tag">Next.js</span><span class="tag">Stripe</span><span class="tag">PostgreSQL</span>
-        </div>
-        <div class="project-title">E-Commerce Platform</div>
-        <p class="project-desc">Platform belanja full-stack dengan fitur payment gateway, manajemen inventory, dan dashboard admin real-time.</p>
-        <div class="project-links">
-          <a href="#" class="project-link">↗ Live Demo</a>
-          <a href="#" class="project-link">⌥ GitHub</a>
-        </div>
-      </div>
-    </div>
-    <div class="project-card proj-b fade-in">
-      <div class="project-thumb">
-        <div class="project-thumb-bg"></div>
-        <div class="project-thumb-icon">📊</div>
-      </div>
-      <div class="project-body">
-        <div class="project-tags">
-          <span class="tag">React</span><span class="tag">D3.js</span><span class="tag">WebSocket</span>
-        </div>
-        <div class="project-title">Analytics Dashboard</div>
-        <p class="project-desc">Dashboard analitik real-time dengan visualisasi data interaktif, chart dinamis, dan pembaruan live via WebSocket.</p>
-        <div class="project-links">
-          <a href="#" class="project-link">↗ Live Demo</a>
-          <a href="#" class="project-link">⌥ GitHub</a>
-        </div>
-      </div>
-    </div>
-    <div class="project-card proj-c fade-in">
-      <div class="project-thumb">
-        <div class="project-thumb-bg"></div>
-        <div class="project-thumb-icon">🤖</div>
-      </div>
-      <div class="project-body">
-        <div class="project-tags">
-          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">OpenAI</span>
-        </div>
-        <div class="project-title">AI Chat Assistant</div>
-        <p class="project-desc">Aplikasi chatbot bertenaga AI dengan konteks percakapan panjang, streaming response, dan riwayat yang tersimpan.</p>
-        <div class="project-links">
-          <a href="#" class="project-link">↗ Live Demo</a>
-          <a href="#" class="project-link">⌥ GitHub</a>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -1105,8 +970,6 @@
     <h2>Sisi Lain Saya</h2>
   </div>
   <div class="socials-grid">
-
-    <!-- SPOTIFY -->
     <div class="spotify-panel fade-in">
       <div class="spotify-header">
         <div class="spotify-brand">
@@ -1120,11 +983,9 @@
       </div>
       <div class="spotify-embed-wrap">
         <iframe
-          id="spotifyIframe"
           title="Spotify Playlist"
           src="https://open.spotify.com/embed/playlist/6Lkgy0IOaNqBk7GyRMkR9v?utm_source=generator&theme=0"
-          width="100%"
-          height="100%"
+          width="100%" height="100%"
           style="min-height:360px;border:0;border-radius:0 0 12px 12px"
           frameborder="0"
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -1133,8 +994,7 @@
         <iframe
           title="Spotify Embed: Recommendation Playlist"
           src="https://open.spotify.com/embed/playlist/1rKCWlGNOYQ3t1Cwzy14G7?utm_source=generator&theme=0"
-          width="100%"
-          height="100%"
+          width="100%" height="100%"
           style="min-height:360px;border:0;"
           frameborder="0"
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -1142,60 +1002,6 @@
         ></iframe>
       </div>
     </div>
-
-    <!-- INSTAGRAM -->
-    <div class="instagram-panel fade-in" style="display:none;">
-      <div class="ig-header">
-        <div class="ig-brand">
-          <div class="ig-logo">▣</div>
-          <span class="ig-gradient-text">Instagram</span>
-        </div>
-        <button class="ig-follow-btn">+ Follow</button>
-      </div>
-
-      <div class="ig-profile">
-        <div class="ig-avatar">
-          <div class="ig-avatar-inner">👨‍💻</div>
-        </div>
-        <div class="ig-user-info">
-          <div class="ig-username">@mhmddwhyu_</div>
-          <div class="ig-fullname">Muhammad Wahyu Nurdin · Web Developer</div>
-        </div>
-      </div>
-
-      <div class="ig-stats">
-        <div class="ig-stat">
-          <div class="ig-stat-num">48</div>
-          <div class="ig-stat-label">Posts</div>
-        </div>
-        <div class="ig-stat">
-          <div class="ig-stat-num">1.2K</div>
-          <div class="ig-stat-label">Followers</div>
-        </div>
-        <div class="ig-stat">
-          <div class="ig-stat-num">320</div>
-          <div class="ig-stat-label">Following</div>
-        </div>
-      </div>
-
-      <div class="ig-grid">
-        <div class="ig-post p1">💻</div>
-        <div class="ig-post p2">🚀</div>
-        <div class="ig-post p3">🌙</div>
-        <div class="ig-post p4">🎮</div>
-        <div class="ig-post p5">☕</div>
-        <div class="ig-post p6">📱</div>
-      </div>
-
-      <div class="ig-footer">
-        <div class="ig-new-post">
-          <span class="new-badge">NEW</span>
-          Foto terbaru diunggah 2j lalu
-        </div>
-        <a href="#" class="ig-view-all">Lihat Semua →</a>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -1212,9 +1018,6 @@
       <a href="https://github.com/wayouKz" class="contact-link">GitHub</a>
       <a href="https://instagram.com/mhmddwahyu_" class="contact-link">Instagram</a>
       <a href="https://www.tiktok.com/@anaktunggalmamapapa" class="contact-link">Tiktok</a>
-      <!-- <a href="#" class="contact-link">LinkedIn</a> -->
-      <!-- <a href="#" class="contact-link">Twitter / X</a> -->
-      <!-- <a href="#" class="contact-link">Download CV</a> -->
     </div>
   </div>
 </section>
@@ -1224,12 +1027,11 @@
 </footer>
 
 <script>
-  // Custom cursor (desktop only)
+  // Custom cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
   const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
   if (!isTouchDevice && cursor && ring) {
     document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
     const animCursor = () => {
@@ -1247,20 +1049,16 @@
   // Hamburger menu
   const hamburger = document.getElementById('hamburger');
   const mobileNav = document.getElementById('mobileNav');
-
   hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('open');
     mobileNav.classList.toggle('open');
     document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
   });
-
   function closeMobileNav() {
     hamburger.classList.remove('open');
     mobileNav.classList.remove('open');
     document.body.style.overflow = '';
   }
-
-  // Close mobile nav on outside click
   mobileNav.addEventListener('click', (e) => {
     if (e.target === mobileNav) closeMobileNav();
   });
@@ -1275,7 +1073,7 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
-  // Animate skill bars on visible
+  // Animate skill bars
   const skillObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
