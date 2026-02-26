@@ -1303,8 +1303,11 @@
   }, { threshold: 0.3 });
   document.querySelectorAll('#skills').forEach(el => skillObs.observe(el));
 
-  // ─── FLOATING MUSIC PLAYER ───────────────────────────────
-  // ================= ELEMENT =================
+ // ─────────────────────────────────────────────
+// FLOATING MUSIC PLAYER (CLEAN VERSION)
+// ─────────────────────────────────────────────
+
+// ================= ELEMENT =================
 const musicToggle = document.getElementById('musicToggle');
 const musicPanel  = document.getElementById('musicPanel');
 const panelClose  = document.getElementById('panelClose');
@@ -1336,11 +1339,11 @@ const tracks = [
     src: 'music/Golden Brown.mp3'
   },
   {
-    name: 'Vibes & Chill',
+    name: 'JVKE - golden hour (Lyrics)',
     artist: 'Wahyu · Late Night',
     emoji: '🌙',
     color: 'linear-gradient(135deg,#f72585,#7c3aed)',
-    src: 'music/vibes.mp3'
+    src: 'music/JVKE - golden hour (Lyrics).mp3'
   }
 ];
 
@@ -1379,15 +1382,18 @@ function loadTrack(index) {
   progressFill.style.width = "0%";
   currentTimeEl.textContent = "0:00";
 }
-
+function getRandomIndex() {
+  return Math.floor(Math.random() * tracks.length);
+}
+window.addEventListener("load", () => {
+  currentTrack = getRandomIndex(); // 🔥 random pertama kali
+  loadTrack(currentTrack);
+});
 
 // ================= PLAY / PAUSE =================
 function togglePlay() {
-  if (isPlaying) {
-    audio.pause();
-  } else {
-    audio.play();
-  }
+  if (isPlaying) audio.pause();
+  else audio.play();
 }
 
 playBtn.addEventListener("click", togglePlay);
@@ -1411,9 +1417,15 @@ audio.addEventListener("pause", () => {
 
 // ================= NEXT / PREV =================
 function nextTrack() {
-  currentTrack = shuffleOn
-    ? Math.floor(Math.random() * tracks.length)
-    : (currentTrack + 1) % tracks.length;
+  if (shuffleOn) {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * tracks.length);
+    } while (newIndex === currentTrack);
+    currentTrack = newIndex;
+  } else {
+    currentTrack = (currentTrack + 1) % tracks.length;
+  }
 
   loadTrack(currentTrack);
   audio.play();
@@ -1451,8 +1463,6 @@ audio.addEventListener("timeupdate", () => {
   currentTimeEl.textContent = formatTime(audio.currentTime);
 });
 
-
-// SEEK CLICK
 progressBar.addEventListener("click", function(e) {
   const rect = this.getBoundingClientRect();
   const pct = (e.clientX - rect.left) / rect.width;
@@ -1483,7 +1493,7 @@ volSlider.addEventListener("click", function(e) {
 });
 
 
-// ================= VISUALIZER (ANIMATION ONLY) =================
+// ================= VISUALIZER =================
 let vizInterval;
 
 function startVisualizer() {
@@ -1507,7 +1517,7 @@ function stopVisualizer() {
 }
 
 
-// ================= PANEL TOGGLE =================
+// ================= PANEL =================
 function togglePanel() {
   panelOpen = !panelOpen;
   musicPanel.classList.toggle("open", panelOpen);
@@ -1523,140 +1533,45 @@ panelClose.addEventListener("click", (e) => {
 
 // ================= INIT =================
 loadTrack(currentTrack);
-function loadTrack(index) {
-  const t = tracks[index];
+// ================= INIT + AUTOPLAY =================
+// ================= SMART AUTOPLAY UNLOCK =================
+let hasInteracted = false;
 
-  trackName.textContent = t.name;
-  trackArtist.textContent = t.artist;
-  trackPlaylist.textContent = t.playlist;
-  albumArt.textContent = t.emoji;
-  albumArt.style.background = t.color;
+function unlockAndPlay() {
+  if (hasInteracted) return;
 
-  audio.src = t.src;
-  audio.load();
-}
+  hasInteracted = true;
 
-  function formatTime(secs) {
-    const m = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  }
+  loadTrack(currentTrack);
 
-  function startProgress() {
-    if (progressInterval) clearInterval(progressInterval);
-    progressInterval = setInterval(() => {
-      progress += 0.2;
-      if (progress >= 100) {
-        progress = 0;
-        if (repeatOn) {
-          // keep same track
-        } else {
-          currentTrack = shuffleOn
-            ? Math.floor(Math.random() * tracks.length)
-            : (currentTrack + 1) % tracks.length;
-          loadTrack(currentTrack);
-        }
-      }
-      progressFill.style.width = progress + '%';
-      currentTime.textContent = formatTime(progress * 2.4); // ~4 min virtual
-    }, 200);
-  }
-
-  function stopProgress() {
-    if (progressInterval) clearInterval(progressInterval);
-  }
-
-  function animateViz() {
-    if (vizInterval) clearInterval(vizInterval);
-    if (!isPlaying) {
-      vizBars.forEach(b => b.classList.remove('active'));
-      return;
-    }
-    vizBars.forEach(b => b.classList.add('active'));
-    vizInterval = setInterval(() => {
-      vizBars.forEach(b => {
-        const h = Math.random() * 85 + 10;
-        b.style.height = h + '%';
-      });
-    }, 120);
-  }
-function togglePlay() {
-  if (isPlaying) {
-    audio.pause();
-    playBtn.textContent = "▶";
-    albumArt.classList.remove("playing");
-  } else {
-    audio.play();
+  audio.play().then(() => {
+    isPlaying = true;
     playBtn.textContent = "⏸";
     albumArt.classList.add("playing");
-  }
-  isPlaying = !isPlaying;
+    toggleBars.classList.add("visible");
+    startVisualizer();
+  }).catch(err => {
+    console.log("Still blocked:", err);
+  });
+
+  document.removeEventListener("click", unlockAndPlay);
 }
 
-playBtn.addEventListener("click", togglePlay);
-  function setPlaying(state) {
-    isPlaying = state;
-    playBtn.textContent = isPlaying ? '⏸' : '▶';
-    albumArt.classList.toggle('playing', isPlaying);
-    toggleBars.classList.toggle('visible', isPlaying);
-    if (isPlaying) { startProgress(); animateViz(); }
-    else { stopProgress(); animateViz(); }
-  }
+// Jalankan saat user klik pertama kali
+document.addEventListener("click", unlockAndPlay);
+function fadeInVolume() {
+  let vol = 0;
+  audio.volume = 0;
 
-  function togglePanel() {
-    panelOpen = !panelOpen;
-    musicPanel.classList.toggle('open', panelOpen);
-    musicToggle.classList.toggle('panel-open', panelOpen);
-  }
-
-  musicToggle.addEventListener('click', togglePanel);
-  panelClose.addEventListener('click', (e) => { e.stopPropagation(); togglePanel(); });
-
-  playBtn.addEventListener('click', () => setPlaying(!isPlaying));
-
-  nextBtn.addEventListener('click', () => {
-    currentTrack = shuffleOn
-      ? Math.floor(Math.random() * tracks.length)
-      : (currentTrack + 1) % tracks.length;
-    loadTrack(currentTrack);
-    if (isPlaying) setPlaying(true);
-  });
-
-  prevBtn.addEventListener('click', () => {
-    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-    loadTrack(currentTrack);
-    if (isPlaying) setPlaying(true);
-  });
-
-  shuffleBtn.addEventListener('click', () => {
-    shuffleOn = !shuffleOn;
-    shuffleBtn.classList.toggle('active', shuffleOn);
-  });
-
-  repeatBtn.addEventListener('click', () => {
-    repeatOn = !repeatOn;
-    repeatBtn.classList.toggle('active', repeatOn);
-  });
-
-  // Progress bar click to seek
-  document.getElementById('progressBar').addEventListener('click', function(e) {
-    const rect = this.getBoundingClientRect();
-    const pct = (e.clientX - rect.left) / rect.width * 100;
-    progress = Math.max(0, Math.min(100, pct));
-    progressFill.style.width = progress + '%';
-    currentTime.textContent = formatTime(progress * 2.4);
-  });
-
-  // Volume slider click
-  volSlider.addEventListener('click', function(e) {
-    const rect = this.getBoundingClientRect();
-    volumeLevel = (e.clientX - rect.left) / rect.width;
-    volumeLevel = Math.max(0, Math.min(1, volumeLevel));
-    volFill.style.width = (volumeLevel * 100) + '%';
-  });
-
-  // Init
-  loadTrack(0);
+  const fade = setInterval(() => {
+    vol += 0.05;
+    if (vol >= volumeLevel) {
+      vol = volumeLevel;
+      clearInterval(fade);
+    }
+    audio.volume = vol;
+  }, 100);
+}
 </script>
 </body>
 </html>
