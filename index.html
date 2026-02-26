@@ -1304,25 +1304,29 @@
   document.querySelectorAll('#skills').forEach(el => skillObs.observe(el));
 
   // ─── FLOATING MUSIC PLAYER ───────────────────────────────
-  const musicToggle = document.getElementById('musicToggle');
-  const musicPanel  = document.getElementById('musicPanel');
-  const panelClose  = document.getElementById('panelClose');
-  const playBtn     = document.getElementById('playBtn');
-  const prevBtn     = document.getElementById('prevBtn');
-  const nextBtn     = document.getElementById('nextBtn');
-  const shuffleBtn  = document.getElementById('shuffleBtn');
-  const repeatBtn   = document.getElementById('repeatBtn');
-  const albumArt    = document.getElementById('albumArt');
-  const trackName   = document.getElementById('trackName');
-  const trackArtist = document.getElementById('trackArtist');
-  const progressFill= document.getElementById('progressFill');
-  const currentTime = document.getElementById('currentTime');
-  const volSlider   = document.getElementById('volSlider');
-  const volFill     = document.getElementById('volFill');
-  const toggleBars  = document.getElementById('toggleBars');
-  const vizBars     = document.querySelectorAll('.viz-bar');
+  // ================= ELEMENT =================
+const musicToggle = document.getElementById('musicToggle');
+const musicPanel  = document.getElementById('musicPanel');
+const panelClose  = document.getElementById('panelClose');
+const playBtn     = document.getElementById('playBtn');
+const prevBtn     = document.getElementById('prevBtn');
+const nextBtn     = document.getElementById('nextBtn');
+const shuffleBtn  = document.getElementById('shuffleBtn');
+const repeatBtn   = document.getElementById('repeatBtn');
+const albumArt    = document.getElementById('albumArt');
+const trackName   = document.getElementById('trackName');
+const trackArtist = document.getElementById('trackArtist');
+const progressBar = document.getElementById('progressBar');
+const progressFill= document.getElementById('progressFill');
+const currentTimeEl = document.getElementById('currentTime');
+const volSlider   = document.getElementById('volSlider');
+const volFill     = document.getElementById('volFill');
+const toggleBars  = document.getElementById('toggleBars');
+const vizBars     = document.querySelectorAll('.viz-bar');
+const audio       = document.getElementById('audio');
 
-  // Playlist (visual only — links to actual Spotify playlists)
+
+// ================= PLAYLIST =================
 const tracks = [
   {
     name: 'Golden Brown',
@@ -1340,31 +1344,196 @@ const tracks = [
   }
 ];
 
-  let currentTrack = 0;
-  let isPlaying = false;
-  let panelOpen = false;
-  let progress = 0;
-  let progressInterval = null;
-  let shuffleOn = false;
-  let repeatOn = false;
-  let volumeLevel = 0.7;
-  let vizInterval = null;
 
-const audio = document.getElementById('audio');
+// ================= STATE =================
+let currentTrack = 0;
+let isPlaying = false;
+let shuffleOn = false;
+let repeatOn = false;
+let volumeLevel = 0.7;
+let panelOpen = false;
 
-function loadTrack(idx) {
-  const t = tracks[idx];
+audio.volume = volumeLevel;
+
+
+// ================= HELPER =================
+function formatTime(secs) {
+  const m = Math.floor(secs / 60);
+  const s = Math.floor(secs % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+
+// ================= LOAD TRACK =================
+function loadTrack(index) {
+  const t = tracks[index];
 
   trackName.textContent = t.name;
   trackArtist.textContent = t.artist;
   albumArt.textContent = t.emoji;
   albumArt.style.background = t.color;
 
-  audio.src = t.src;   // ✅ load file lagu
-  audio.load();        // reload audio
+  audio.src = t.src;
+  audio.load();
 
-  progressFill.style.width = '0%';
-  currentTime.textContent = '0:00';
+  progressFill.style.width = "0%";
+  currentTimeEl.textContent = "0:00";
+}
+
+
+// ================= PLAY / PAUSE =================
+function togglePlay() {
+  if (isPlaying) {
+    audio.pause();
+  } else {
+    audio.play();
+  }
+}
+
+playBtn.addEventListener("click", togglePlay);
+
+audio.addEventListener("play", () => {
+  isPlaying = true;
+  playBtn.textContent = "⏸";
+  albumArt.classList.add("playing");
+  toggleBars.classList.add("visible");
+  startVisualizer();
+});
+
+audio.addEventListener("pause", () => {
+  isPlaying = false;
+  playBtn.textContent = "▶";
+  albumArt.classList.remove("playing");
+  toggleBars.classList.remove("visible");
+  stopVisualizer();
+});
+
+
+// ================= NEXT / PREV =================
+function nextTrack() {
+  currentTrack = shuffleOn
+    ? Math.floor(Math.random() * tracks.length)
+    : (currentTrack + 1) % tracks.length;
+
+  loadTrack(currentTrack);
+  audio.play();
+}
+
+function prevTrack() {
+  currentTrack =
+    (currentTrack - 1 + tracks.length) % tracks.length;
+
+  loadTrack(currentTrack);
+  audio.play();
+}
+
+nextBtn.addEventListener("click", nextTrack);
+prevBtn.addEventListener("click", prevTrack);
+
+
+// ================= AUTO NEXT / REPEAT =================
+audio.addEventListener("ended", () => {
+  if (repeatOn) {
+    audio.currentTime = 0;
+    audio.play();
+  } else {
+    nextTrack();
+  }
+});
+
+
+// ================= PROGRESS REAL =================
+audio.addEventListener("timeupdate", () => {
+  if (!audio.duration) return;
+
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressFill.style.width = percent + "%";
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+
+
+// SEEK CLICK
+progressBar.addEventListener("click", function(e) {
+  const rect = this.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = pct * audio.duration;
+});
+
+
+// ================= SHUFFLE & REPEAT =================
+shuffleBtn.addEventListener("click", () => {
+  shuffleOn = !shuffleOn;
+  shuffleBtn.classList.toggle("active", shuffleOn);
+});
+
+repeatBtn.addEventListener("click", () => {
+  repeatOn = !repeatOn;
+  repeatBtn.classList.toggle("active", repeatOn);
+});
+
+
+// ================= VOLUME =================
+volSlider.addEventListener("click", function(e) {
+  const rect = this.getBoundingClientRect();
+  volumeLevel = (e.clientX - rect.left) / rect.width;
+  volumeLevel = Math.max(0, Math.min(1, volumeLevel));
+
+  audio.volume = volumeLevel;
+  volFill.style.width = (volumeLevel * 100) + "%";
+});
+
+
+// ================= VISUALIZER (ANIMATION ONLY) =================
+let vizInterval;
+
+function startVisualizer() {
+  stopVisualizer();
+  vizBars.forEach(b => b.classList.add("active"));
+
+  vizInterval = setInterval(() => {
+    vizBars.forEach(b => {
+      const h = Math.random() * 80 + 20;
+      b.style.height = h + "%";
+    });
+  }, 120);
+}
+
+function stopVisualizer() {
+  clearInterval(vizInterval);
+  vizBars.forEach(b => {
+    b.classList.remove("active");
+    b.style.height = "20%";
+  });
+}
+
+
+// ================= PANEL TOGGLE =================
+function togglePanel() {
+  panelOpen = !panelOpen;
+  musicPanel.classList.toggle("open", panelOpen);
+  musicToggle.classList.toggle("panel-open", panelOpen);
+}
+
+musicToggle.addEventListener("click", togglePanel);
+panelClose.addEventListener("click", (e) => {
+  e.stopPropagation();
+  togglePanel();
+});
+
+
+// ================= INIT =================
+loadTrack(currentTrack);
+function loadTrack(index) {
+  const t = tracks[index];
+
+  trackName.textContent = t.name;
+  trackArtist.textContent = t.artist;
+  trackPlaylist.textContent = t.playlist;
+  albumArt.textContent = t.emoji;
+  albumArt.style.background = t.color;
+
+  audio.src = t.src;
+  audio.load();
 }
 
   function formatTime(secs) {
@@ -1411,7 +1580,20 @@ function loadTrack(idx) {
       });
     }, 120);
   }
+function togglePlay() {
+  if (isPlaying) {
+    audio.pause();
+    playBtn.textContent = "▶";
+    albumArt.classList.remove("playing");
+  } else {
+    audio.play();
+    playBtn.textContent = "⏸";
+    albumArt.classList.add("playing");
+  }
+  isPlaying = !isPlaying;
+}
 
+playBtn.addEventListener("click", togglePlay);
   function setPlaying(state) {
     isPlaying = state;
     playBtn.textContent = isPlaying ? '⏸' : '▶';
