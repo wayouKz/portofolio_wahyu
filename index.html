@@ -41,7 +41,7 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 2;
+      z-index: 0;
       background:
         radial-gradient(ellipse 60% 40% at 0% 50%, rgba(0,245,212,calc(var(--aura-intensity)*0.06)) 0%, transparent 70%),
         radial-gradient(ellipse 60% 40% at 100% 50%, rgba(124,58,237,calc(var(--aura-intensity)*0.06)) 0%, transparent 70%),
@@ -59,7 +59,7 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 3;
+      z-index: 0;
       opacity: 0;
       background: radial-gradient(ellipse at center, rgba(0,245,212,0.04) 0%, transparent 70%);
       transition: opacity 0.05s;
@@ -106,7 +106,7 @@
       inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
       pointer-events: none;
-      z-index: 1000;
+      z-index: 0;
       opacity: 0.4;
     }
 
@@ -387,6 +387,57 @@
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
     .hero-right { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; }
 
+    /* ═══ FLIP CARD ═══ */
+    .flip-card {
+      width: 100%;
+      max-width: 500px;
+      perspective: 1200px;
+      cursor: pointer;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* Inner: use grid so both faces stack and the TALLER one sets the height */
+    .flip-card-inner {
+      display: grid;
+      grid-template-areas: "card";
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    @media (hover: hover) {
+      .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+    }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+    /* Both faces occupy the same grid cell — tallest wins */
+    .flip-card-front,
+    .flip-card-back {
+      grid-area: card;
+      width: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* Back is rotated 180deg and sits on the same spot */
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Flip hint */
+    .flip-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--accent);
+      margin-left: auto;
+      letter-spacing: 0.05em;
+      opacity: 0.55;
+      white-space: nowrap;
+    }
+
+    /* Both windows always rendered — never hidden */
+    .code-window    { display: block !important; animation: none !important; }
+    .picture-window { display: block !important; animation: none !important; max-width: 100% !important; }
+
     /* Code window aura */
     .code-window {
       background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 500px; overflow: hidden;
@@ -418,9 +469,9 @@
 
     /* Picture window aura */
     .picture-window {
-      display: none; background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 340px;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; width: 100%;
       overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-      animation: float 6s ease-in-out infinite; position: relative;
+      position: relative;
       transition: box-shadow 0.5s, border-color 0.5s;
     }
     body.music-playing .picture-window {
@@ -609,8 +660,7 @@
       .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; min-height: auto; padding-bottom: 4rem; }
       .hero::after { display: none; }
       .hero-right { display: flex; margin-top: 2.5rem; justify-content: center; }
-      .code-window { display: none; }
-      .picture-window { display: block; }
+      /* flip card handles its own display — no override needed */
       .stats { grid-template-columns: repeat(2, 1fr); padding: 0; }
       .socials-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: repeat(2, 1fr); }
@@ -622,7 +672,12 @@
       nav { padding: 0.9rem 1.25rem; } .nav-logo { font-size: 0.85rem; } h1 { font-size: 2rem; } .hero-desc { font-size: 0.95rem; } .hero-btns { gap: 0.75rem; } .btn { padding: 0.75rem 1.5rem; font-size: 0.72rem; } .hero { padding: 5.5rem 1.25rem 3rem; }
       section { padding: 3.5rem 1.25rem; } .socials-section { padding: 3.5rem 1.25rem; } .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; } .skill-card { padding: 1rem 0.75rem; }
       .timeline { padding-left: 1.25rem; } .timeline-item { padding-left: 1.5rem; } .timeline-role { font-size: 1.05rem; } .stat-num { font-size: 2.2rem; }
-      .contact-links { flex-direction: column; align-items: center; } .contact-link { width: 100%; max-width: 260px; text-align: center; } .picture-window { max-width: 280px; }
+      .contact-links { flex-direction: column; align-items: center; } .contact-link { width: 100%; max-width: 260px; text-align: center; }
+      .flip-card { max-width: 320px; }
+      /* On small screens show "tap" hint */
+      .flip-card-front .flip-hint::after { content: 'tap to flip ↩'; }
+      .flip-card-front .flip-hint { font-size: 0; }
+      .flip-card-front .flip-hint::after { font-size: 0.58rem; }
     }
     @media (max-width: 360px) { .skills-grid { grid-template-columns: 1fr; } h2 { font-size: 1.6rem; } }
   </style>
@@ -742,48 +797,64 @@
     </div>
   </div>
   <div class="hero-right fade-in">
-    <div class="code-window">
-      <div class="window-bar">
-        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-        <span class="window-title">about.ts</span>
-      </div>
-      <div class="code-body">
-        <div><span class="ln">01</span><span class="kw">const</span> <span class="fn">developer</span> = {</div>
-        <div><span class="ln">02</span>&nbsp;&nbsp;<span class="ac">name</span>: <span class="str">"Muhammad Wahyu Nurdin"</span>,</div>
-        <div><span class="ln">03</span>&nbsp;&nbsp;<span class="ac">role</span>: <span class="str">"Web Developer"</span>,</div>
-        <div><span class="ln">09</span>&nbsp;&nbsp;<span class="ac">available</span>: <span class="kw">true</span>,</div>
-        <div><span class="ln">10</span>};</div>
-        <div>&nbsp;</div>
-        <div><span class="ln">12</span><span class="cm">// Let's build world 🚀</span></div>
-        <div><span class="ln">13</span><span class="fn">export default</span> <span class="ac">developer</span>;</div>
-      </div>
-    </div>
-    <div class="picture-window">
-      <div class="picture-window-bar">
-        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-        <span class="picture-window-title">profile.jpg</span>
-      </div>
-      <div class="picture-window-body">
-        <div class="avatar-wrap">
-          <div class="avatar-ring">
-            <div class="avatar-inner">
-              <img src="myphoto.jpeg" alt="Muhammad Wahyu Nurdin" />
+    <!-- FLIP CARD WRAPPER -->
+    <div class="flip-card" id="flipCard" title="Hover / tap to flip">
+      <div class="flip-card-inner">
+
+        <!-- FRONT: Code Window -->
+        <div class="flip-card-front">
+          <div class="picture-window">
+            <div class="picture-window-bar">
+              <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+              <span class="picture-window-title">profile.jpg</span>
+              <span class="flip-hint">tap to flip ↩</span>
+            </div>
+            <div class="picture-window-body">
+              <div class="avatar-wrap">
+                <div class="avatar-ring">
+                  <div class="avatar-inner">
+                    <img src="myphoto.jpeg" alt="Muhammad Wahyu Nurdin" />
+                  </div>
+                </div>
+                <div class="avatar-name">Muhammad Wahyu Nurdin</div>
+                <div class="avatar-role">Web Developer</div>
+                <div class="avatar-badges">
+                  <span class="badge badge-a">React</span>
+                  <span class="badge badge-b">Laravel</span>
+                  <span class="badge badge-a">Tailwind</span>
+                  <span class="badge badge-c">PHP</span>
+                  <span class="badge badge-b">MySQL</span>
+                </div>
+              </div>
+            </div>
+            <div class="picture-status">
+              <div class="status-dot"></div>
+              <span class="status-text"><strong>Available</strong> · Open for new projects</span>
             </div>
           </div>
-          <div class="avatar-name">Muhammad Wahyu Nurdin</div>
-          <div class="avatar-role">Web Developer</div>
-          <div class="avatar-badges">
-            <span class="badge badge-a">React</span>
-            <span class="badge badge-b">Laravel</span>
-            <span class="badge badge-a">Tailwind</span>
-            <span class="badge badge-c">PHP</span>
-            <span class="badge badge-b">MySQL</span>
+        </div>
+
+        <!-- BACK: Picture Window -->
+        <div class="flip-card-back">
+          <div class="code-window">
+            <div class="window-bar">
+              <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+              <span class="window-title">about.ts</span>
+              <span class="flip-hint">hover to flip ↩</span>
+            </div>
+            <div class="code-body">
+              <div><span class="ln">01</span><span class="kw">const</span> <span class="fn">developer</span> = {</div>
+              <div><span class="ln">02</span>&nbsp;&nbsp;<span class="ac">name</span>: <span class="str">"Muhammad Wahyu Nurdin"</span>,</div>
+              <div><span class="ln">03</span>&nbsp;&nbsp;<span class="ac">role</span>: <span class="str">"Web Developer"</span>,</div>
+              <div><span class="ln">09</span>&nbsp;&nbsp;<span class="ac">available</span>: <span class="kw">true</span>,</div>
+              <div><span class="ln">10</span>};</div>
+              <div>&nbsp;</div>
+              <div><span class="ln">12</span><span class="cm">// Let's build world 🚀</span></div>
+              <div><span class="ln">13</span><span class="fn">export default</span> <span class="ac">developer</span>;</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="picture-status">
-        <div class="status-dot"></div>
-        <span class="status-text"><strong>Available</strong> · Open for new projects</span>
+
       </div>
     </div>
   </div>
@@ -904,6 +975,18 @@
 </footer>
 
 <script>
+// ─── Flip card (touch/click toggle) ─────────────────────
+const flipCard = document.getElementById('flipCard');
+if (flipCard) {
+  flipCard.addEventListener('click', (e) => {
+    // Only toggle flip on touch/no-hover devices
+    const isHoverDevice = window.matchMedia('(hover: hover)').matches;
+    if (!isHoverDevice) {
+      flipCard.classList.toggle('flipped');
+    }
+  });
+}
+
 // ─── Custom cursor ───────────────────────────────────────
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
@@ -1185,9 +1268,11 @@ function togglePanel() {
 musicToggle.addEventListener('click', togglePanel);
 panelClose.addEventListener('click', e => { e.stopPropagation(); togglePanel(); });
 
-// ─── Autoplay on first interaction ───────────────────────
+// ─── Autoplay on first meaningful interaction ─────────────
 let hasInteracted = false;
-function unlockAndPlay() {
+function unlockAndPlay(e) {
+  // Don't unlock if clicking the flip card (that's a UI interaction, not intent to play)
+  if (e.target.closest('#flipCard')) return;
   if (hasInteracted) return;
   hasInteracted = true;
   setupAudioContext();
