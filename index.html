@@ -66,6 +66,365 @@
       opacity: 0.4;
     }
 
+    /* ═══════════════════════════════════════
+       FLOATING MUSIC PLAYER
+    ═══════════════════════════════════════ */
+    .music-player {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 8000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    /* Expanded panel */
+    .music-panel {
+      background: rgba(10, 10, 18, 0.92);
+      backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(0, 245, 212, 0.18);
+      border-radius: 20px;
+      width: 320px;
+      overflow: hidden;
+      box-shadow:
+        0 32px 64px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(255,255,255,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      pointer-events: all;
+      transform-origin: bottom right;
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), opacity 0.3s ease;
+      transform: scale(0.85) translateY(12px);
+      opacity: 0;
+      visibility: hidden;
+    }
+    .music-panel.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Panel top glow */
+    .music-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,245,212,0.5), transparent);
+    }
+
+    .panel-header {
+      padding: 1rem 1.25rem 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .panel-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .panel-title-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-green 1.5s ease-in-out infinite;
+    }
+    .panel-close {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+    .panel-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+
+    /* Album art area */
+    .album-section {
+      padding: 1.25rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .album-art {
+      width: 60px; height: 60px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent3), var(--accent));
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(124,58,237,0.3);
+    }
+    .album-art::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+    }
+    /* Vinyl spin when playing */
+    .album-art.playing { animation: vinyl-spin 4s linear infinite; }
+    @keyframes vinyl-spin {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(360deg); }
+    }
+
+    .track-info { flex: 1; min-width: 0; }
+    .track-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.2rem;
+    }
+    .track-artist {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .track-playlist {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: rgba(0,245,212,0.6);
+      letter-spacing: 0.05em;
+      margin-top: 0.2rem;
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      padding: 0 1.25rem 0.75rem;
+    }
+    .progress-bar {
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.5s linear;
+      position: relative;
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 9px; height: 9px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .progress-bar:hover .progress-fill::after { opacity: 1; }
+
+    .progress-times {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+    }
+
+    /* Controls */
+    .controls {
+      padding: 0 1.25rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .ctrl-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .ctrl-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+    .ctrl-btn.play-btn {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      border: none;
+      color: white;
+      font-size: 1rem;
+      box-shadow: 0 6px 20px rgba(0,245,212,0.25);
+    }
+    .ctrl-btn.play-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 28px rgba(0,245,212,0.4);
+    }
+    .ctrl-btn.active { color: var(--accent); border-color: rgba(0,245,212,0.3); }
+
+    /* Visualizer bars */
+    .visualizer {
+      padding: 0.5rem 1.25rem 0.75rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 36px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .viz-bar {
+      flex: 1;
+      background: linear-gradient(to top, var(--accent2), var(--accent));
+      border-radius: 2px 2px 0 0;
+      opacity: 0.5;
+      min-height: 3px;
+      transition: height 0.1s ease;
+    }
+    .viz-bar.active { opacity: 0.9; }
+
+    /* Volume row */
+    .volume-row {
+      padding: 0 1.25rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .vol-icon {
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .vol-slider {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    .vol-fill {
+      height: 100%;
+      width: 70%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* Floating toggle button */
+    .music-toggle {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: rgba(10,10,18,0.9);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(0,245,212,0.25);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      pointer-events: all;
+      position: relative;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(255,255,255,0.04);
+      transition: all 0.3s ease;
+      overflow: visible;
+    }
+    .music-toggle:hover {
+      border-color: rgba(0,245,212,0.5);
+      box-shadow:
+        0 12px 40px rgba(0,0,0,0.6),
+        0 0 30px rgba(0,245,212,0.15);
+      transform: scale(1.05);
+    }
+
+    /* Pulse rings */
+    .music-toggle::before,
+    .music-toggle::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,245,212,0.2);
+      animation: music-pulse 2s ease-out infinite;
+      opacity: 0;
+    }
+    .music-toggle::after { animation-delay: 1s; }
+    @keyframes music-pulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    /* Pause the pulse rings when music panel open */
+    .music-toggle.panel-open::before,
+    .music-toggle.panel-open::after {
+      animation: none;
+      opacity: 0;
+    }
+
+    .toggle-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+    .music-toggle:hover .toggle-icon { transform: scale(1.1) rotate(-5deg); }
+
+    /* Animated bars inside toggle (when playing) */
+    .toggle-bars {
+      position: absolute;
+      bottom: 10px;
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .toggle-bars.visible { opacity: 1; }
+    .toggle-bars span {
+      width: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: bar-dance 0.6s ease-in-out infinite alternate;
+    }
+    .toggle-bars span:nth-child(1) { height: 6px; animation-delay: 0s; }
+    .toggle-bars span:nth-child(2) { height: 10px; animation-delay: 0.15s; }
+    .toggle-bars span:nth-child(3) { height: 6px; animation-delay: 0.3s; }
+    @keyframes bar-dance {
+      from { transform: scaleY(0.4); }
+      to { transform: scaleY(1); }
+    }
+
+    @keyframes pulse-green {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,245,212,0.4); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0,245,212,0); }
+    }
+
+    @media (max-width: 480px) {
+      .music-player { bottom: 16px; right: 16px; }
+      .music-panel { width: 290px; }
+    }
+
     /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
@@ -239,13 +598,11 @@
       transform: translateY(-2px);
     }
 
-    /* Hero right */
     .hero-right {
       display: flex; justify-content: center; align-items: center;
       position: relative; z-index: 1;
     }
 
-    /* ── CODE WINDOW (desktop default) ── */
     .code-window {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -291,9 +648,8 @@
     .ac { color: var(--accent); }
     .type { color: #ffcb6b; }
 
-    /* ── PICTURE WINDOW (mobile only) ── */
     .picture-window {
-      display: none; /* hidden on desktop */
+      display: none;
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -325,8 +681,6 @@
       align-items: center;
       justify-content: center;
     }
-
-    /* Glowing orb bg */
     .picture-window-body::before {
       content: '';
       position: absolute;
@@ -339,8 +693,6 @@
       background: radial-gradient(circle, rgba(0,245,212,0.12) 0%, rgba(124,58,237,0.08) 50%, transparent 70%);
       pointer-events: none;
     }
-
-    /* Avatar circle */
     .avatar-wrap {
       position: relative;
       z-index: 1;
@@ -381,8 +733,6 @@
       object-fit: cover;
       border-radius: 50%;
     }
-
-    /* Name + role below avatar */
     .avatar-name {
       font-size: 1.1rem;
       font-weight: 800;
@@ -397,8 +747,6 @@
       text-transform: uppercase;
       text-align: center;
     }
-
-    /* Skill badges row */
     .avatar-badges {
       display: flex;
       gap: 0.45rem;
@@ -414,23 +762,9 @@
       letter-spacing: 0.05em;
       border: 1px solid;
     }
-    .badge-a {
-      background: rgba(0,245,212,0.08);
-      color: var(--accent);
-      border-color: rgba(0,245,212,0.25);
-    }
-    .badge-b {
-      background: rgba(124,58,237,0.1);
-      color: #a78bfa;
-      border-color: rgba(124,58,237,0.3);
-    }
-    .badge-c {
-      background: rgba(247,37,133,0.08);
-      color: #f472b6;
-      border-color: rgba(247,37,133,0.25);
-    }
-
-    /* Status indicator */
+    .badge-a { background: rgba(0,245,212,0.08); color: var(--accent); border-color: rgba(0,245,212,0.25); }
+    .badge-b { background: rgba(124,58,237,0.1); color: #a78bfa; border-color: rgba(124,58,237,0.3); }
+    .badge-c { background: rgba(247,37,133,0.08); color: #f472b6; border-color: rgba(247,37,133,0.25); }
     .picture-status {
       padding: 0.75rem 1rem;
       border-top: 1px solid var(--border);
@@ -445,10 +779,6 @@
       background: var(--accent);
       flex-shrink: 0;
       animation: pulse-green 1.5s ease-in-out infinite;
-    }
-    @keyframes pulse-green {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,245,212,0.4); }
-      50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0,245,212,0); }
     }
     .status-text {
       font-family: 'JetBrains Mono', monospace;
@@ -468,49 +798,17 @@
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
-    .stat {
-      background: var(--bg);
-      padding: 2rem;
-      text-align: center;
-    }
-    .stat-num {
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-    .stat-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
+    .stat { background: var(--bg); padding: 2rem; text-align: center; }
+    .stat-num { font-size: 2.8rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
+    .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
 
-    /* SECTION */
     section { padding: 6rem 4rem; }
     .section-header { margin-bottom: 3.5rem; }
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-    h2 {
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.02em; }
 
     /* SKILLS */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem;
-    }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
     .skill-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -532,33 +830,12 @@
     .skill-card:hover::before { opacity: 0.08; }
     .skill-icon { font-size: 2rem; margin-bottom: 0.5rem; }
     .skill-icon img { width: 2rem; height: 2rem; object-fit: contain; }
-    .skill-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--text);
-      position: relative;
-    }
-    .skill-level {
-      margin-top: 0.75rem;
-      height: 3px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      position: relative;
-    }
-    .skill-level-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent2), var(--accent));
-      border-radius: 2px;
-      transition: width 1.5s cubic-bezier(.2,.8,.2,1);
-    }
+    .skill-name { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text); position: relative; }
+    .skill-level { margin-top: 0.75rem; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; position: relative; }
+    .skill-level-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 2px; transition: width 1.5s cubic-bezier(.2,.8,.2,1); }
 
     /* PROJECTS */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
     .project-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -567,18 +844,8 @@
       transition: all 0.3s ease;
       position: relative;
     }
-    .project-card:hover {
-      border-color: rgba(0,245,212,0.3);
-      transform: translateY(-6px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    }
-    .project-thumb {
-      height: 180px;
-      background: var(--bg3);
-      position: relative;
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .project-card:hover { border-color: rgba(0,245,212,0.3); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .project-thumb { height: 180px; background: var(--bg3); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .project-thumb-bg { position: absolute; inset: 0; opacity: 0.6; }
     .proj-a .project-thumb-bg { background: linear-gradient(135deg, #0d1117, #1a1040); }
     .proj-b .project-thumb-bg { background: linear-gradient(135deg, #0d1117, #140d24); }
@@ -586,157 +853,49 @@
     .project-thumb-icon { font-size: 3.5rem; position: relative; z-index: 1; }
     .project-body { padding: 1.5rem; }
     .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
-    .tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      background: rgba(124,58,237,0.15);
-      color: #a78bfa;
-      border: 1px solid rgba(124,58,237,0.3);
-      letter-spacing: 0.05em;
-    }
+    .tag { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; padding: 0.2rem 0.6rem; border-radius: 4px; background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); letter-spacing: 0.05em; }
     .project-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
     .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
     .project-links { display: flex; gap: 1rem; }
-    .project-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      display: flex; align-items: center; gap: 0.35rem;
-      transition: opacity 0.2s;
-    }
+    .project-link { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent); text-decoration: none; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.35rem; transition: opacity 0.2s; }
     .project-link:hover { opacity: 0.7; }
 
     /* EXPERIENCE */
     .timeline { position: relative; padding-left: 2rem; }
-    .timeline::before {
-      content: '';
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
-    }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent); }
     .timeline-item { position: relative; padding: 0 0 3rem 2.5rem; }
-    .timeline-item::before {
-      content: '';
-      position: absolute; left: -0.35rem; top: 0.35rem;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 12px var(--accent);
-    }
-    .timeline-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      margin-bottom: 0.35rem;
-    }
+    .timeline-item::before { content: ''; position: absolute; left: -0.35rem; top: 0.35rem; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    .timeline-date { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.35rem; }
     .timeline-role { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.2rem; }
     .timeline-company { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.75rem; }
     .timeline-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
 
     /* CONTACT */
-    #contact {
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-    }
+    #contact { background: var(--bg2); border-top: 1px solid var(--border); }
     .contact-inner { max-width: 600px; margin: 0 auto; text-align: center; }
     .contact-inner h2 { margin-bottom: 1rem; }
     .contact-inner p { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
     .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .contact-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.6rem 1.2rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      letter-spacing: 0.05em;
-      transition: all 0.2s;
-    }
+    .contact-link { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); text-decoration: none; padding: 0.6rem 1.2rem; border: 1px solid var(--border); border-radius: 4px; letter-spacing: 0.05em; transition: all 0.2s; }
     .contact-link:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
+    footer { text-align: center; padding: 2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border); }
     footer span { color: var(--accent3); }
 
-    /* Animations */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-in.visible { opacity: 1; transform: none; }
 
-    /* SOCIALS */
-    .socials-section {
-      padding: 6rem 4rem;
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
+    .socials-section { padding: 6rem 4rem; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
-    /* SPOTIFY PANEL */
-    .spotify-panel {
-      background: #0d0d0d;
-      border: 1px solid rgba(30,215,96,0.2);
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-    }
-    .spotify-panel::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at top left, rgba(30,215,96,0.08) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .spotify-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .spotify-brand {
-      display: flex; align-items: center; gap: 0.6rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: #1ed760;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .spotify-logo {
-      width: 20px; height: 20px;
-      background: #1ed760;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem;
-      color: #000;
-    }
-    .spotify-live {
-      display: flex; align-items: center; gap: 0.4rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: #1ed760;
-    }
-    .live-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #1ed760;
-      animation: pulse-green 1.5s ease-in-out infinite;
-    }
+    .spotify-panel { background: #0d0d0d; border: 1px solid rgba(30,215,96,0.2); border-radius: 16px; overflow: hidden; position: relative; }
+    .spotify-panel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at top left, rgba(30,215,96,0.08) 0%, transparent 60%); pointer-events: none; }
+    .spotify-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .spotify-brand { display: flex; align-items: center; gap: 0.6rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #1ed760; letter-spacing: 0.1em; text-transform: uppercase; }
+    .spotify-logo { width: 20px; height: 20px; background: #1ed760; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #000; }
+    .spotify-live { display: flex; align-items: center; gap: 0.4rem; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: #1ed760; }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #1ed760; animation: pulse-green 1.5s ease-in-out infinite; }
     .spotify-embed-wrap iframe { display: block; }
 
-    /* RESPONSIVE */
     @media (max-width: 1024px) {
       nav { padding: 1rem 2rem; }
       .hero { padding: 8rem 2rem 4rem; gap: 2rem; }
@@ -749,24 +908,11 @@
       nav { padding: 1rem 1.5rem; }
       .nav-hamburger { display: flex; }
       .nav-links { display: none; }
-
-      .hero {
-        grid-template-columns: 1fr;
-        padding: 6rem 1.5rem 3rem;
-        min-height: auto;
-        padding-bottom: 4rem;
-      }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; min-height: auto; padding-bottom: 4rem; }
       .hero::after { display: none; }
-      .hero-right {
-        display: flex;
-        margin-top: 2.5rem;
-        justify-content: center;
-      }
-
-      /* On tablet/mobile: hide code window, show picture window */
+      .hero-right { display: flex; margin-top: 2.5rem; justify-content: center; }
       .code-window { display: none; }
       .picture-window { display: block; }
-
       .stats { grid-template-columns: repeat(2, 1fr); padding: 0; }
       .socials-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: repeat(2, 1fr); }
@@ -806,6 +952,85 @@
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+<audio id="audio"></audio>
+<!-- ═══════════════════════════════════════
+     FLOATING MUSIC PLAYER
+═══════════════════════════════════════ -->
+<div class="music-player" id="musicPlayer">
+  <!-- Panel -->
+  <div class="music-panel" id="musicPanel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <div class="panel-title-dot"></div>
+        Now Playing
+      </div>
+      <div class="panel-close" id="panelClose">✕</div>
+    </div>
+
+    <div class="album-section">
+      <div class="album-art" id="albumArt">🎵</div>
+      <div class="track-info">
+        <div class="track-name" id="trackName">My Playlist</div>
+        <div class="track-artist" id="trackArtist">Muhammad Wahyu Nurdin</div>
+        <div class="track-playlist" id="trackPlaylist">♫ Spotify · Vibing</div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-times">
+        <span id="currentTime">0:00</span>
+        <span id="totalTime">∞</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="ctrl-btn" id="shuffleBtn" title="Shuffle">⇄</div>
+      <div class="ctrl-btn" id="prevBtn" title="Previous">⏮</div>
+      <div class="ctrl-btn play-btn" id="playBtn" title="Play/Pause">▶</div>
+      <div class="ctrl-btn" id="nextBtn" title="Next">⏭</div>
+      <div class="ctrl-btn" id="repeatBtn" title="Repeat">↺</div>
+    </div>
+
+    <!-- Visualizer -->
+    <div class="visualizer" id="visualizer">
+      <div class="viz-bar" style="height:40%"></div>
+      <div class="viz-bar" style="height:60%"></div>
+      <div class="viz-bar" style="height:80%"></div>
+      <div class="viz-bar" style="height:50%"></div>
+      <div class="viz-bar" style="height:90%"></div>
+      <div class="viz-bar" style="height:40%"></div>
+      <div class="viz-bar" style="height:70%"></div>
+      <div class="viz-bar" style="height:55%"></div>
+      <div class="viz-bar" style="height:85%"></div>
+      <div class="viz-bar" style="height:45%"></div>
+      <div class="viz-bar" style="height:65%"></div>
+      <div class="viz-bar" style="height:75%"></div>
+      <div class="viz-bar" style="height:35%"></div>
+      <div class="viz-bar" style="height:95%"></div>
+      <div class="viz-bar" style="height:50%"></div>
+      <div class="viz-bar" style="height:60%"></div>
+    </div>
+
+    <div class="volume-row">
+      <span class="vol-icon">🔈</span>
+      <div class="vol-slider" id="volSlider">
+        <div class="vol-fill" id="volFill"></div>
+      </div>
+      <span class="vol-icon">🔊</span>
+    </div>
+  </div>
+
+  <!-- Toggle Button -->
+  <div class="music-toggle" id="musicToggle" title="Music Player">
+    <span class="toggle-icon" id="toggleIcon">🎧</span>
+    <div class="toggle-bars" id="toggleBars">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
 
 <!-- Mobile Nav Overlay -->
 <div class="nav-mobile-overlay" id="mobileNav">
@@ -838,8 +1063,6 @@
   </div>
 
   <div class="hero-right fade-in">
-
-    <!-- CODE WINDOW: visible on desktop (>900px) -->
     <div class="code-window">
       <div class="window-bar">
         <div class="dot dot-r"></div>
@@ -858,8 +1081,6 @@
         <div><span class="ln">13</span><span class="fn">export default</span> <span class="ac">developer</span>;</div>
       </div>
     </div>
-
-    <!-- PICTURE WINDOW: visible on mobile/tablet (<900px) -->
     <div class="picture-window">
       <div class="picture-window-bar">
         <div class="dot dot-r"></div>
@@ -871,8 +1092,6 @@
         <div class="avatar-wrap">
           <div class="avatar-ring">
             <div class="avatar-inner">
-              <!-- Ganti src="" dengan URL foto kamu jika ada -->
-              <!-- <img src="URL_FOTO_KAMU" alt="Muhammad Wahyu Nurdin" /> -->
               <img src="myphoto.jpeg" alt="Muhammad Wahyu Nurdin" />
             </div>
           </div>
@@ -892,7 +1111,6 @@
         <span class="status-text"><strong>Available</strong> · Open for new projects</span>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -1027,7 +1245,7 @@
 </footer>
 
 <script>
-  // Custom cursor
+  // ─── Custom cursor ───────────────────────────────────────
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
@@ -1046,7 +1264,7 @@
     animCursor();
   }
 
-  // Hamburger menu
+  // ─── Hamburger menu ──────────────────────────────────────
   const hamburger = document.getElementById('hamburger');
   const mobileNav = document.getElementById('mobileNav');
   hamburger.addEventListener('click', () => {
@@ -1063,7 +1281,7 @@
     if (e.target === mobileNav) closeMobileNav();
   });
 
-  // Fade in on scroll
+  // ─── Fade in on scroll ───────────────────────────────────
   const obs = new IntersectionObserver(entries => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) {
@@ -1084,6 +1302,179 @@
     });
   }, { threshold: 0.3 });
   document.querySelectorAll('#skills').forEach(el => skillObs.observe(el));
+
+  // ─── FLOATING MUSIC PLAYER ───────────────────────────────
+  const musicToggle = document.getElementById('musicToggle');
+  const musicPanel  = document.getElementById('musicPanel');
+  const panelClose  = document.getElementById('panelClose');
+  const playBtn     = document.getElementById('playBtn');
+  const prevBtn     = document.getElementById('prevBtn');
+  const nextBtn     = document.getElementById('nextBtn');
+  const shuffleBtn  = document.getElementById('shuffleBtn');
+  const repeatBtn   = document.getElementById('repeatBtn');
+  const albumArt    = document.getElementById('albumArt');
+  const trackName   = document.getElementById('trackName');
+  const trackArtist = document.getElementById('trackArtist');
+  const progressFill= document.getElementById('progressFill');
+  const currentTime = document.getElementById('currentTime');
+  const volSlider   = document.getElementById('volSlider');
+  const volFill     = document.getElementById('volFill');
+  const toggleBars  = document.getElementById('toggleBars');
+  const vizBars     = document.querySelectorAll('.viz-bar');
+
+  // Playlist (visual only — links to actual Spotify playlists)
+const tracks = [
+  {
+    name: 'Golden Brown',
+    artist: 'Wahyu · Curated',
+    emoji: '🎵',
+    color: 'linear-gradient(135deg,#7c3aed,#00f5d4)',
+    src: 'music/Golden Brown.mp3'
+  },
+  {
+    name: 'Vibes & Chill',
+    artist: 'Wahyu · Late Night',
+    emoji: '🌙',
+    color: 'linear-gradient(135deg,#f72585,#7c3aed)',
+    src: 'music/vibes.mp3'
+  }
+];
+
+  let currentTrack = 0;
+  let isPlaying = false;
+  let panelOpen = false;
+  let progress = 0;
+  let progressInterval = null;
+  let shuffleOn = false;
+  let repeatOn = false;
+  let volumeLevel = 0.7;
+  let vizInterval = null;
+
+const audio = document.getElementById('audio');
+
+function loadTrack(idx) {
+  const t = tracks[idx];
+
+  trackName.textContent = t.name;
+  trackArtist.textContent = t.artist;
+  albumArt.textContent = t.emoji;
+  albumArt.style.background = t.color;
+
+  audio.src = t.src;   // ✅ load file lagu
+  audio.load();        // reload audio
+
+  progressFill.style.width = '0%';
+  currentTime.textContent = '0:00';
+}
+
+  function formatTime(secs) {
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  function startProgress() {
+    if (progressInterval) clearInterval(progressInterval);
+    progressInterval = setInterval(() => {
+      progress += 0.2;
+      if (progress >= 100) {
+        progress = 0;
+        if (repeatOn) {
+          // keep same track
+        } else {
+          currentTrack = shuffleOn
+            ? Math.floor(Math.random() * tracks.length)
+            : (currentTrack + 1) % tracks.length;
+          loadTrack(currentTrack);
+        }
+      }
+      progressFill.style.width = progress + '%';
+      currentTime.textContent = formatTime(progress * 2.4); // ~4 min virtual
+    }, 200);
+  }
+
+  function stopProgress() {
+    if (progressInterval) clearInterval(progressInterval);
+  }
+
+  function animateViz() {
+    if (vizInterval) clearInterval(vizInterval);
+    if (!isPlaying) {
+      vizBars.forEach(b => b.classList.remove('active'));
+      return;
+    }
+    vizBars.forEach(b => b.classList.add('active'));
+    vizInterval = setInterval(() => {
+      vizBars.forEach(b => {
+        const h = Math.random() * 85 + 10;
+        b.style.height = h + '%';
+      });
+    }, 120);
+  }
+
+  function setPlaying(state) {
+    isPlaying = state;
+    playBtn.textContent = isPlaying ? '⏸' : '▶';
+    albumArt.classList.toggle('playing', isPlaying);
+    toggleBars.classList.toggle('visible', isPlaying);
+    if (isPlaying) { startProgress(); animateViz(); }
+    else { stopProgress(); animateViz(); }
+  }
+
+  function togglePanel() {
+    panelOpen = !panelOpen;
+    musicPanel.classList.toggle('open', panelOpen);
+    musicToggle.classList.toggle('panel-open', panelOpen);
+  }
+
+  musicToggle.addEventListener('click', togglePanel);
+  panelClose.addEventListener('click', (e) => { e.stopPropagation(); togglePanel(); });
+
+  playBtn.addEventListener('click', () => setPlaying(!isPlaying));
+
+  nextBtn.addEventListener('click', () => {
+    currentTrack = shuffleOn
+      ? Math.floor(Math.random() * tracks.length)
+      : (currentTrack + 1) % tracks.length;
+    loadTrack(currentTrack);
+    if (isPlaying) setPlaying(true);
+  });
+
+  prevBtn.addEventListener('click', () => {
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    loadTrack(currentTrack);
+    if (isPlaying) setPlaying(true);
+  });
+
+  shuffleBtn.addEventListener('click', () => {
+    shuffleOn = !shuffleOn;
+    shuffleBtn.classList.toggle('active', shuffleOn);
+  });
+
+  repeatBtn.addEventListener('click', () => {
+    repeatOn = !repeatOn;
+    repeatBtn.classList.toggle('active', repeatOn);
+  });
+
+  // Progress bar click to seek
+  document.getElementById('progressBar').addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width * 100;
+    progress = Math.max(0, Math.min(100, pct));
+    progressFill.style.width = progress + '%';
+    currentTime.textContent = formatTime(progress * 2.4);
+  });
+
+  // Volume slider click
+  volSlider.addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    volumeLevel = (e.clientX - rect.left) / rect.width;
+    volumeLevel = Math.max(0, Math.min(1, volumeLevel));
+    volFill.style.width = (volumeLevel * 100) + '%';
+  });
+
+  // Init
+  loadTrack(0);
 </script>
 </body>
 </html>
