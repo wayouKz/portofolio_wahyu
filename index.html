@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Muhammad Wahyu Nurdin | Web Developer</title>
+  <title>Dev Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/png" href="myphoto.jpeg">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -680,13 +679,197 @@
       .flip-card-front .flip-hint { font-size: 0; }
       .flip-card-front .flip-hint::after { font-size: 0.58rem; }
     }
+
+    /* ═══════════════════════════════════════
+       NEON BUTTERFLY SYSTEM
+    ═══════════════════════════════════════ */
+    #butterfly-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #butterfly-canvas.active { opacity: 1; }
     @media (max-width: 360px) { .skills-grid { grid-template-columns: 1fr; } h2 { font-size: 1.6rem; } }
+    /* ═══════════════════════════════════════
+       SECRET SECTION
+    ═══════════════════════════════════════ */
+    .secret-trigger {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: default;
+      vertical-align: middle;
+      margin-left: 6px;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .secret-trigger.h1 { background: rgba(247,37,133,0.2); border-color: rgba(247,37,133,0.3); }
+    .secret-trigger.h2 { background: rgba(247,37,133,0.4); border-color: rgba(247,37,133,0.5); box-shadow: 0 0 6px rgba(247,37,133,0.3); }
+    .secret-trigger.h3 { background: rgba(247,37,133,0.7); border-color: rgba(247,37,133,0.8); box-shadow: 0 0 10px rgba(247,37,133,0.5); animation: secret-pulse 0.5s ease-in-out infinite alternate; }
+    @keyframes secret-pulse { from { transform: scale(1); } to { transform: scale(1.4); } }
+
+    #secret-section {
+      display: none;
+      position: relative;
+      overflow: hidden;
+    }
+    #secret-section.revealed { display: block; animation: secret-reveal 0.6s ease forwards; }
+    @keyframes secret-reveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+
+    .secret-banner {
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a0a2e 50%, #0d0d0d 100%);
+      border-top: 1px solid rgba(247,37,133,0.3);
+      border-bottom: 1px solid rgba(247,37,133,0.3);
+      padding: 5rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .secret-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 20% 50%, rgba(247,37,133,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 60% at 80% 50%, rgba(124,58,237,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .secret-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent3);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .secret-label::before, .secret-label::after {
+      content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent3);
+    }
+
+    .secret-title {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      position: relative;
+      display: inline-block;
+    }
+    .secret-title .g {
+      background: linear-gradient(135deg, var(--accent3), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .secret-title::before {
+      content: attr(data-text);
+      position: absolute; inset: 0;
+      color: var(--accent3);
+      animation: glitch-1 4s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+      opacity: 0.5;
+      -webkit-text-fill-color: var(--accent3);
+    }
+    .secret-title::after {
+      content: attr(data-text);
+      position: absolute; inset: 0;
+      color: var(--accent);
+      animation: glitch-2 4s infinite;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+      opacity: 0.5;
+      -webkit-text-fill-color: var(--accent);
+    }
+    @keyframes glitch-1 {
+      0%, 88%, 100% { transform: none; opacity: 0; }
+      90% { transform: translate(-3px, 1px); opacity: 0.7; }
+      92% { transform: translate(3px, -1px); opacity: 0.5; }
+      94% { transform: none; opacity: 0; }
+    }
+    @keyframes glitch-2 {
+      0%, 88%, 100% { transform: none; opacity: 0; }
+      91% { transform: translate(3px, -2px); opacity: 0.7; }
+      93% { transform: translate(-2px, 1px); opacity: 0.5; }
+      95% { transform: none; opacity: 0; }
+    }
+
+    .secret-desc {
+      font-size: 1rem; color: var(--muted); line-height: 1.8; max-width: 500px; margin: 0 auto 2rem;
+    }
+    .secret-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(247,37,133,0.08); border: 1px solid rgba(247,37,133,0.25);
+      border-radius: 20px; padding: 0.3rem 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--accent3); letter-spacing: 0.08em;
+    }
+
+    .secret-cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem; padding: 4rem; background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .secret-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.75rem; position: relative; overflow: hidden; transition: all 0.3s ease;
+    }
+    .secret-card:hover { transform: translateY(-4px); border-color: rgba(247,37,133,0.3); box-shadow: 0 16px 48px rgba(247,37,133,0.07); }
+    .secret-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(247,37,133,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
+    .secret-card:hover::before { opacity: 1; }
+    .secret-card-icon { font-size: 2.2rem; margin-bottom: 0.75rem; display: block; }
+    .secret-card-label { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; color: var(--accent3); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .secret-card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .secret-card-body { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+    .secret-card-body strong { color: var(--text); }
+    .secret-card-body .pk { color: var(--accent3); font-weight: 700; }
+    .secret-card-body .cy { color: var(--accent); font-weight: 700; }
+
+    .secret-terminal {
+      background: #080810; border: 1px solid rgba(0,245,212,0.18); border-radius: 12px; overflow: hidden;
+      grid-column: span 2;
+    }
+    .secret-terminal-bar {
+      background: #12121e; padding: 0.6rem 1rem; display: flex; align-items: center; gap: 0.4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .secret-terminal-body { padding: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 2; }
+    .tp { color: var(--accent); } .tc { color: var(--text); } .to { color: var(--muted); }
+    .tv { color: #c3e88d; } .tpk { color: var(--accent3); }
+    .t-cursor { display: inline-block; width: 7px; height: 1em; background: var(--accent); vertical-align: text-bottom; animation: blink 1s step-end infinite; margin-left: 2px; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .secret-footer {
+      padding: 2.5rem 4rem; text-align: center; background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+    .secret-close-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.7rem 1.8rem; border-radius: 4px;
+      border: 1px solid rgba(247,37,133,0.3); background: transparent; color: var(--accent3);
+      cursor: pointer; transition: all 0.25s ease;
+    }
+    .secret-close-btn:hover { background: rgba(247,37,133,0.08); box-shadow: 0 0 20px rgba(247,37,133,0.2); transform: translateY(-2px); }
+
+    @media (max-width: 900px) {
+      .secret-banner { padding: 4rem 1.5rem; }
+      .secret-cards { padding: 2.5rem 1.5rem; }
+      .secret-terminal { grid-column: span 1; }
+      .secret-footer { padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .secret-cards { grid-template-columns: 1fr; padding: 2rem 1.25rem; }
+      .secret-banner { padding: 3rem 1.25rem; }
+    }
   </style>
 </head>
 <body>
 
 <!-- Beat flash layer -->
 <div class="beat-flash" id="beatFlash"></div>
+
+<!-- Butterfly canvas -->
+<canvas id="butterfly-canvas"></canvas>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
@@ -804,7 +987,7 @@
 
         <!-- FRONT: Code Window -->
         <div class="flip-card-front">
-          <div class="picture-window">
+ <div class="picture-window">
             <div class="picture-window-bar">
               <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
               <span class="picture-window-title">profile.jpg</span>
@@ -837,7 +1020,7 @@
 
         <!-- BACK: Picture Window -->
         <div class="flip-card-back">
-  <div class="code-window">
+                <div class="code-window">
             <div class="window-bar">
               <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
               <span class="window-title">about.ts</span>
@@ -854,6 +1037,7 @@
               <div><span class="ln">13</span><span class="fn">export default</span> <span class="ac">developer</span>;</div>
             </div>
           </div>
+
         </div>
 
       </div>
@@ -971,8 +1155,102 @@
   </div>
 </section>
 
+
+<!-- ═══════════════════════════════════════
+     SECRET SECTION (hidden by default)
+═══════════════════════════════════════ -->
+<section id="secret-section">
+  <!-- Banner -->
+  <div class="secret-banner">
+    <div class="secret-label">// you found it</div>
+    <h2 class="secret-title" data-text="Behind The Screen">
+      Behind The <span class="g">Screen</span>
+    </h2>
+    <p class="secret-desc">
+      Selamat, kamu berhasil menemukan halaman tersembunyi ini.
+      Tidak semua orang sampai sejauh ini. 🫵
+    </p>
+    <span class="secret-badge">🔓 unlocked · easter egg</span>
+  </div>
+
+  <!-- Cards -->
+  <div class="secret-cards">
+
+    <div class="secret-card">
+      <span class="secret-card-icon">☕</span>
+      <div class="secret-card-label">// fuel</div>
+      <div class="secret-card-title">Beroperasi dengan Kopi</div>
+      <div class="secret-card-body">
+        Rata-rata <span class="pk">2–3 cangkir</span> per hari. Kalau lagi deadline bisa sampai <strong>4</strong>.
+        Kopi hitam, tanpa gula, kadang sambil ngoding jam 2 malam.
+      </div>
+    </div>
+
+    <div class="secret-card">
+      <span class="secret-card-icon">🎮</span>
+      <div class="secret-card-label">// off hours</div>
+      <div class="secret-card-title">Gamer Sejati</div>
+      <div class="secret-card-body">
+        Waktu luang hampir selalu diisi gaming. Genre favorit: <span class="cy">open world</span> & <span class="pk">action RPG</span>.
+        Filosofi hidup: <em>"skill issue"</em> berlaku di code dan game.
+      </div>
+    </div>
+
+    <div class="secret-card">
+      <span class="secret-card-icon">🌙</span>
+      <div class="secret-card-label">// work mode</div>
+      <div class="secret-card-title">Night Owl Developer</div>
+      <div class="secret-card-body">
+        Otak paling produktif mulai jam <span class="pk">9 malam</span> sampai dini hari.
+        Kalau ada bug yang susah, hampir pasti ketemu solusinya tengah malam.
+      </div>
+    </div>
+
+    <div class="secret-card">
+      <span class="secret-card-icon">🧠</span>
+      <div class="secret-card-label">// philosophy</div>
+      <div class="secret-card-title">Learning By Doing</div>
+      <div class="secret-card-body">
+        Lebih suka <span class="cy">langsung eksperimen</span> daripada baca dokumentasi dulu.
+        Error adalah teman terbaik — setiap bug yang fix = ilmu baru yang nyangkut.
+      </div>
+    </div>
+
+    <!-- Terminal card spans 2 cols on desktop -->
+    <div class="secret-card secret-terminal">
+      <div class="secret-terminal-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--muted);margin-left:0.5rem">wahyu@portfolio ~ %</span>
+      </div>
+      <div class="secret-terminal-body">
+        <div><span class="tp">❯</span> <span class="tc">cat fun_facts.json</span></div>
+        <div><span class="to">{</span></div>
+        <div>&nbsp;&nbsp;<span class="tc">"real_name"</span>: <span class="tv">"Muhammad Wahyu Nurdin"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="tc">"aka"</span>: <span class="tpk">"whoayou"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="tc">"city"</span>: <span class="tv">"Gorontalo, Indonesia 🌴"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="tc">"first_language"</span>: <span class="tv">"HTML (of course)"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="tc">"favorite_error"</span>: <span class="tpk">"undefined is not a function"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="tc">"tabs_or_spaces"</span>: <span class="tv">"spaces (don't @ me)"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="tc">"dream_project"</span>: <span class="tv">"sesuatu yang beneran dipakai orang"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="tc">"secret_skill"</span>: <span class="tpk">"bisa tidur 3 jam dan tetap produktif"</span></div>
+        <div><span class="to">}</span></div>
+        <div><span class="tp">❯</span> <span class="tc">echo "thanks for finding this 🤍"</span></div>
+        <div><span class="to">thanks for finding this 🤍</span></div>
+        <div><span class="tp">❯</span><span class="t-cursor"></span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Close -->
+  <div class="secret-footer">
+    <button class="secret-close-btn" onclick="closeSecret()">✕ tutup rahasia ini</button>
+  </div>
+</section>
+
 <footer>
   Muhammad Wahyu Nurdin · <script>document.write(new Date().getFullYear())</script>
+  <span class="secret-trigger" id="secretTrigger" title=""></span>
 </footer>
 
 <script>
@@ -1052,8 +1330,12 @@ const audio       = document.getElementById('audio');
 const beatFlash   = document.getElementById('beatFlash');
 
 const tracks = [
-  { name: 'Golden Brown', artist: 'Wahyu · Curated', emoji: '🎵', color: 'linear-gradient(135deg,#7c3aed,#00f5d4)', src: 'music/Golden Brown.mp3' },
-  { name: 'JVKE - golden hour', artist: 'Wahyu · Late Night', emoji: '🌙', color: 'linear-gradient(135deg,#f72585,#7c3aed)', src: 'music/JVKE - golden hour (Lyrics).mp3' }
+{ name: 'JVKE - golden hour', artist: 'Wahyu · Late Night', emoji: '🌙', color: 'linear-gradient(135deg,#f72585,#7c3aed)', src: 'music/JVKE - golden hour (Lyrics).mp3' },
+  { name: 'Golden Brown', artist: 'Wahyu · Late Night', emoji: '🎵', color: 'linear-gradient(135deg,#7c3aed,#00f5d4)', src: 'music/Golden Brown.mp3' },
+  { name: 'JVK - her', artist: 'Wahyu · Late Night', emoji: '🌙', color: 'linear-gradient(135deg,#f72585,#7c3aed)', src: 'music/JVK - her.mp3' },
+  { name: 'The 1975 - About You', artist: 'Wahyu · Late Night', emoji: '😔', color: 'linear-gradient(135deg,#f72585,#7c3aed)', src: 'music/The 1975 - About You.mp3' },
+  { name: 'Perfection _ Sempurna English Version - BBIBEEB', artist: 'Wahyu · Late Night', emoji: '😔', color: 'linear-gradient(135deg,#f72585,#7c3aed)', src: 'music/Perfection _ Sempurna English Version - BBIBEEB.mp3' },
+  { name: 'Hantu _ Multo Indonesian Version - BBIBEEB', artist: 'Wahyu · Late Night', emoji: '😔', color: 'linear-gradient(135deg,#f72585,#7c3aed)', src: 'music/Hantu _ Multo Indonesian Version - BBIBEEB.mp3' },
 ];
 
 let currentTrack = 0;
@@ -1164,6 +1446,9 @@ function triggerBeat(intensity) {
   const nav = document.querySelector('nav');
   nav.style.borderBottomColor = `rgba(0,245,212,${0.1 + intensity * 0.4})`;
   setTimeout(() => { nav.style.borderBottomColor = ''; }, 200);
+
+  // Butterfly beat reaction
+  if (window.butterflyBeat) window.butterflyBeat();
 }
 
 function clearAura() {
@@ -1209,6 +1494,7 @@ audio.addEventListener('play', () => {
   albumArt.classList.add('playing');
   toggleBars.classList.add('visible');
   if (!auraRAF) updateAura();
+  if (window.butterflyStart) window.butterflyStart();
 });
 
 audio.addEventListener('pause', () => {
@@ -1219,6 +1505,7 @@ audio.addEventListener('pause', () => {
   toggleBars.classList.remove('visible');
   clearAura();
   vizBars.forEach(b => { b.classList.remove('active'); b.style.height = '20%'; });
+  if (window.butterflyStop) window.butterflyStop();
 });
 
 // ─── Next / Prev ─────────────────────────────────────────
@@ -1269,6 +1556,47 @@ function togglePanel() {
 musicToggle.addEventListener('click', togglePanel);
 panelClose.addEventListener('click', e => { e.stopPropagation(); togglePanel(); });
 
+
+// ─── SECRET SECTION ──────────────────────────────────────
+const secretTrigger = document.getElementById('secretTrigger');
+const secretSection = document.getElementById('secret-section');
+let secretClicks = 0;
+let secretTimer = null;
+
+if (secretTrigger) {
+  secretTrigger.addEventListener('click', () => {
+    secretClicks++;
+    clearTimeout(secretTimer);
+
+    // Visual feedback stages
+    secretTrigger.className = 'secret-trigger';
+    if (secretClicks >= 2) secretTrigger.classList.add('h1');
+    if (secretClicks >= 4) secretTrigger.classList.add('h2');
+    if (secretClicks >= 6) secretTrigger.classList.add('h3');
+
+    if (secretClicks >= 7) {
+      // UNLOCK!
+      secretTrigger.style.display = 'none';
+      secretSection.classList.add('revealed');
+      secretSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      secretClicks = 0;
+    } else {
+      // Reset after 2s inactivity
+      secretTimer = setTimeout(() => {
+        secretClicks = 0;
+        secretTrigger.className = 'secret-trigger';
+      }, 2000);
+    }
+  });
+}
+
+function closeSecret() {
+  secretSection.classList.remove('revealed');
+  setTimeout(() => { secretSection.style.display = 'none'; }, 400);
+  if (secretTrigger) secretTrigger.style.display = 'inline-block';
+  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+}
+
 // ─── Autoplay on first meaningful interaction ─────────────
 let hasInteracted = false;
 function unlockAndPlay(e) {
@@ -1281,6 +1609,239 @@ function unlockAndPlay(e) {
   document.removeEventListener('click', unlockAndPlay);
 }
 document.addEventListener('click', unlockAndPlay);
+
+
+// ═══════════════════════════════════════════════════════
+// NEON BUTTERFLY SYSTEM
+// ═══════════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('butterfly-canvas');
+  const ctx = canvas.getContext('2d');
+  let butterflies = [];
+  let animId = null;
+  let active = false;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Neon color palettes
+  const PALETTES = [
+    ['#00f5d4', '#7c3aed', '#00e5ff'],
+    ['#f72585', '#7c3aed', '#ff6db3'],
+    ['#00f5d4', '#f72585', '#a78bfa'],
+    ['#ffbe0b', '#00f5d4', '#fb5607'],
+  ];
+
+  function randomPalette() {
+    return PALETTES[Math.floor(Math.random() * PALETTES.length)];
+  }
+
+  class Butterfly {
+    constructor() {
+      this.reset(true);
+    }
+
+    reset(initial = false) {
+      this.x = initial ? Math.random() * canvas.width : -60;
+      this.y = initial
+        ? Math.random() * canvas.height
+        : 80 + Math.random() * (canvas.height - 160);
+      this.vx = 0.18 + Math.random() * 0.35;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.size = 14 + Math.random() * 18;
+      this.palette = randomPalette();
+      this.wingPhase = Math.random() * Math.PI * 2;
+      this.wingSpeed = 0.04 + Math.random() * 0.03;
+      this.wobbleAmp = 0.5 + Math.random() * 0.8;
+      this.wobbleFreq = 0.02 + Math.random() * 0.02;
+      this.wobbleOffset = Math.random() * Math.PI * 2;
+      this.trail = [];
+      this.trailLen = 18 + Math.floor(Math.random() * 12);
+      this.alpha = 0;
+      this.fadeIn = true;
+      this.rotation = 0;
+      this.beatScale = 1;
+    }
+
+    update(beat) {
+      this.wingPhase += this.wingSpeed;
+      this.x += this.vx;
+      this.y += this.vy + Math.sin(this.x * this.wobbleFreq + this.wobbleOffset) * this.wobbleAmp;
+      this.rotation = Math.sin(this.wingPhase * 0.5) * 0.15;
+
+      // Beat reaction: scale wings briefly
+      if (beat) this.beatScale = 1.35;
+      this.beatScale += (1 - this.beatScale) * 0.12;
+
+      // Trail
+      this.trail.unshift({ x: this.x, y: this.y });
+      if (this.trail.length > this.trailLen) this.trail.pop();
+
+      // Fade in/out
+      if (this.fadeIn) { this.alpha = Math.min(1, this.alpha + 0.03); }
+      if (this.x > canvas.width + 80) this.alpha -= 0.04;
+      if (this.alpha <= 0 && !this.fadeIn) this.reset();
+    }
+
+    drawWing(ctx, cx, cy, side, wingOpen, size, color, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const sw = side; // 1 = right, -1 = left
+      const wAngle = wingOpen * sw;
+
+      // Upper wing
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(this.rotation);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      const ux1 = sw * size * 0.9 * Math.cos(wAngle);
+      const uy1 = -size * 0.5 + sw * size * 0.1 * Math.sin(wAngle);
+      const ux2 = sw * size * 1.1 * Math.cos(wAngle);
+      const uy2 = size * 0.5;
+      ctx.bezierCurveTo(ux1 - sw * 4, uy1 - 8, ux2, uy2 * 0.3, ux2 * 0.7, uy2);
+      ctx.bezierCurveTo(ux2 * 0.3, uy2 * 1.1, sw * 4, size * 0.3, 0, 0);
+
+      // Neon fill
+      const grad = ctx.createRadialGradient(ux1 * 0.5, uy1 * 0.5, 0, ux1 * 0.5, uy1 * 0.5, size * 0.9);
+      grad.addColorStop(0, color + 'cc');
+      grad.addColorStop(0.5, color + '66');
+      grad.addColorStop(1, color + '11');
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Neon outline glow
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = color;
+      ctx.strokeStyle = color + 'bb';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+
+      // Lower wing (smaller)
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(this.rotation);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      const lx1 = sw * size * 0.7 * Math.cos(wAngle * 0.8);
+      const ly1 = size * 0.5;
+      const lx2 = sw * size * 0.5 * Math.cos(wAngle * 0.8);
+      const ly2 = size * 1.1;
+      ctx.bezierCurveTo(lx1, ly1 - 4, lx2 + sw * 6, ly2, lx2 * 0.5, ly2 * 0.9);
+      ctx.bezierCurveTo(sw * 2, size * 0.8, sw * 2, size * 0.4, 0, 0);
+
+      const grad2 = ctx.createRadialGradient(lx1, ly1, 0, lx1, ly1, size * 0.6);
+      grad2.addColorStop(0, this.palette[1] + 'aa');
+      grad2.addColorStop(1, this.palette[1] + '11');
+      ctx.fillStyle = grad2;
+      ctx.fill();
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = this.palette[1];
+      ctx.strokeStyle = this.palette[1] + '99';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    draw(ctx) {
+      if (this.alpha <= 0) return;
+      const wingOpen = Math.sin(this.wingPhase) * Math.PI * 0.42 * this.beatScale;
+
+      // Draw trail
+      this.trail.forEach((pt, i) => {
+        const t = 1 - i / this.trailLen;
+        ctx.save();
+        ctx.globalAlpha = this.alpha * t * 0.18;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = this.palette[0];
+        ctx.fillStyle = this.palette[0];
+        const r = (this.size * 0.08) * t;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // Wings
+      this.drawWing(ctx, this.x, this.y, 1, wingOpen, this.size, this.palette[0], this.alpha);
+      this.drawWing(ctx, this.x, this.y, -1, wingOpen, this.size, this.palette[0], this.alpha);
+
+      // Body
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = this.palette[2] || '#fff';
+      ctx.strokeStyle = this.palette[2] || '#fff';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y - this.size * 0.55);
+      ctx.lineTo(this.x, this.y + this.size * 0.55);
+      ctx.stroke();
+      // Antennae
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y - this.size * 0.5);
+      ctx.quadraticCurveTo(this.x - 6, this.y - this.size * 0.9, this.x - 8, this.y - this.size * 1.1);
+      ctx.moveTo(this.x, this.y - this.size * 0.5);
+      ctx.quadraticCurveTo(this.x + 6, this.y - this.size * 0.9, this.x + 8, this.y - this.size * 1.1);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  function spawnButterflies(count) {
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => butterflies.push(new Butterfly()), i * 180);
+    }
+  }
+
+  let beatFlag = false;
+
+  function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    butterflies.forEach(b => {
+      b.update(beatFlag);
+      b.draw(ctx);
+    });
+    beatFlag = false;
+    animId = requestAnimationFrame(loop);
+  }
+
+  // Public API — called by music player
+  window.butterflyStart = function() {
+    if (active) return;
+    active = true;
+    canvas.classList.add('active');
+    butterflies = [];
+    spawnButterflies(7);
+    loop();
+  };
+
+  window.butterflyStop = function() {
+    active = false;
+    canvas.classList.remove('active');
+    cancelAnimationFrame(animId);
+    animId = null;
+    butterflies = [];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  window.butterflyBeat = function() {
+    beatFlag = true;
+    // Spawn an extra butterfly on strong beats occasionally
+    if (butterflies.length < 12 && Math.random() < 0.25) {
+      butterflies.push(new Butterfly());
+    }
+  };
+})();
+
 </script>
 </body>
 </html>
