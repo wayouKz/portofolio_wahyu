@@ -14,18 +14,136 @@
 
   let history=[],histIdx=-1,startTime=Date.now(),matrixRAF=null,matrixActive=false;
 
+  // ─── Lazy-loaded module registry ────────────────────────────────────────────
+  // Heavy features are only initialised the first time they are needed.
+  const _lazyLoaded = {};
+
+  /**
+   * getLazyModule(key, factory)
+   * Runs `factory` once and caches the result.  All subsequent calls return
+   * the cached value without running `factory` again.
+   */
+  function getLazyModule(key, factory) {
+    if (!_lazyLoaded[key]) {
+      _lazyLoaded[key] = factory();
+    }
+    return _lazyLoaded[key];
+  }
+
+  // ─── Command data — loaded lazily the first time `help` or autocomplete ─────
+  // runs, keeping startup cost near-zero.
+  function getCommandData() {
+    return getLazyModule('commandData', () => ({
+      COMMANDS:{help:1,whoami:1,skills:1,projects:1,contact:1,coffee:1,sleep:1,clear:1,neofetch:1,matrix:1,party:1,konami:1,sudo:1,'rm -rf':1,ls:1,cd:1,cat:1,git:1,'hire me':1,joke:1,fact:1,ping:1,date:1,echo:1,pwd:1,yes:1,flip:1,dance:1,hug:1},
+      CMD_DESCS:{help:'show all commands',whoami:'about wahyu',skills:'tech stack list',projects:'portfolio projects',contact:'get in touch',coffee:'fuel meter ☕',sleep:'wahyu needs rest',clear:'clear terminal',neofetch:'system info',matrix:'enter the matrix',party:'celebrate! 🎉',joke:'random dev joke',fact:'random fun fact',ping:'check connection',date:'current date/time',echo:'echo your text',flip:'(╯°□°）╯︵ ┻━┻',dance:'do a lil dance',hug:'virtual hug','hire me':'open to work info'},
+    }));
+  }
+
+  // ─── Static content blobs — only allocated when their command is run ─────────
+  function getJokes() {
+    return getLazyModule('jokes', () => [
+      ['Why do programmers prefer dark mode?','Because light attracts bugs! 🐛'],
+      ['How do you comfort a JavaScript bug?','You console it. 😂'],
+      ["Why did the developer quit?","Because they didn't get arrays. 💀"],
+      ["What's a programmer's favorite snack?",'Microchips! 🍟'],
+      ['Why do Java developers wear glasses?',"Because they don't C#! 👓"],
+      ['A SQL query walks into a bar...','...walks up to two tables and asks: "Can I JOIN you?" 🍺'],
+    ]);
+  }
+
+  function getFacts() {
+    return getLazyModule('facts', () => [
+      'The first computer bug was an actual bug — a moth found inside a Harvard Mark II in 1947. 🦗',
+      'JavaScript was created in just 10 days by Brendan Eich in 1995. 😱',
+      '"Bug" in code was popularized by Grace Hopper after literally finding a moth in a relay. 🐛',
+      'The average web page in 2024 is over 2.5MB — heavier than Doom (1993). 🎮',
+      'PHP originally stood for "Personal Home Page". Now: "PHP: Hypertext Preprocessor". 🔄',
+      'Stack Overflow was founded in 2008. Before that, devs figured things out alone. 😰',
+    ]);
+  }
+
+  function getProjects() {
+    return getLazyModule('projects', () => [
+      {name:'mokaraja.net',desc:"Freelance web projects",stack:'Laravel · MySQL',status:'🟢 live'},
+      {name:'Portfolio v3',desc:"This site you're on!",stack:'HTML · CSS · JS',status:'🟢 live'},
+      {name:'Coming soon…',desc:'Next big project',stack:'???',status:'🟡 building'},
+    ]);
+  }
+
+  function getSkills() {
+    return getLazyModule('skills', () => [
+      ['Laravel',100,'#f72585'],
+      ['Tailwind CSS',92,'#38bdf8'],
+      ['PHP',90,'#c792ea'],
+      ['React',80,'#61dafb'],
+      ['MySQL',75,'#4ade80'],
+      ['Bootstrap',70,'#7c3aed'],
+      ['Node.js',50,'#84cc16'],
+    ]);
+  }
+
+  // ─── Matrix — canvas drawing only wired up on first use ─────────────────────
+  function getMatrixCtx() {
+    return getLazyModule('matrixCtx', () => {
+      const ctx = matrixCanvas.getContext('2d');
+      matrixCanvas.width  = window.innerWidth;
+      matrixCanvas.height = window.innerHeight;
+      // Resize handler registered once
+      window.addEventListener('resize', () => {
+        matrixCanvas.width  = window.innerWidth;
+        matrixCanvas.height = window.innerHeight;
+      });
+      return { ctx, chars: 'アイウエオカキクケコサシスセソ0123456789ABCDEF</>{}[]' };
+    });
+  }
+
+  // ─── Konami listener — registered lazily when first keydown fires ────────────
+  let konamiIdx = 0;
+  const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  // Registered once on first keydown (avoids attaching before page is ready)
+  function registerKonami() {
+    getLazyModule('konami', () => {
+      document.addEventListener('keydown', (e) => {
+        if (e.key === KONAMI[konamiIdx]) {
+          konamiIdx++;
+          if (konamiIdx === KONAMI.length) {
+            konamiIdx = 0;
+            emojiRainBurst(['⭐','🌟','✨','💫','🎉','🎊','🥳','🎆','🎇'], 50);
+            showEgg('🕹️','KONAMI CODE!','↑↑↓↓←→←→BA\n\nYOU FOUND THE KONAMI CODE!\n\n+30 Lives added to your portfolio.\nWahyu would be very impressed. 😤');
+            printLine('<span style="color:#fbbf24">⭐ KONAMI CODE ACTIVATED! 🕹️</span>','out','warn');
+          }
+        } else { konamiIdx = 0; }
+      });
+      return true;
+    });
+  }
+  // Register Konami after first user interaction so it doesn't slow initial parse
+  document.addEventListener('keydown', registerKonami, { once: true });
+
+  // ─── Uptime counter ──────────────────────────────────────────────────────────
   setInterval(()=>{const s=Math.floor((Date.now()-startTime)/1000);const m=Math.floor(s/60),sec=s%60;termUptime.textContent=m>0?`up ${m}m ${sec}s`:`up ${sec}s`;},1000);
   termInput.addEventListener('focus',()=>termWindow.classList.add('focused'));
   termInput.addEventListener('blur',()=>termWindow.classList.remove('focused'));
   termWindow.addEventListener('click',()=>termInput.focus());
 
-  document.querySelectorAll('.hint-chip').forEach(chip=>{
-    chip.addEventListener('click',()=>{termInput.value=chip.dataset.cmd;termInput.focus();runCommand(chip.dataset.cmd.trim());termInput.value='';});
+  // Hint chips — use Intersection Observer so off-screen chips aren't wired ────
+  const _chipObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const chip = entry.target;
+        chip.addEventListener('click', () => {
+          termInput.value = chip.dataset.cmd;
+          termInput.focus();
+          runCommand(chip.dataset.cmd.trim());
+          termInput.value = '';
+        });
+        _chipObserver.unobserve(chip); // wire once, then stop observing
+      }
+    });
   });
+  document.querySelectorAll('.hint-chip').forEach(chip => _chipObserver.observe(chip));
 
-  const COMMANDS={help:1,whoami:1,skills:1,projects:1,contact:1,coffee:1,sleep:1,clear:1,neofetch:1,matrix:1,party:1,konami:1,sudo:1,'rm -rf':1,ls:1,cd:1,cat:1,git:1,'hire me':1,joke:1,fact:1,ping:1,date:1,echo:1,pwd:1,yes:1,flip:1,dance:1,hug:1};
-  const CMD_DESCS={help:'show all commands',whoami:'about wahyu',skills:'tech stack list',projects:'portfolio projects',contact:'get in touch',coffee:'fuel meter ☕',sleep:'wahyu needs rest',clear:'clear terminal',neofetch:'system info',matrix:'enter the matrix',party:'celebrate! 🎉',joke:'random dev joke',fact:'random fun fact',ping:'check connection',date:'current date/time',echo:'echo your text',flip:'(╯°□°）╯︵ ┻━┻',dance:'do a lil dance',hug:'virtual hug','hire me':'open to work info'};
-
+  // ─── Core helpers ────────────────────────────────────────────────────────────
   function printLine(text='',type='out',cls=''){
     const div=document.createElement('div');
     div.className=`term-line ${type} ${cls}`;
@@ -53,6 +171,7 @@
     await wait(100);pct.textContent='✓ done';pct.style.color='#4ade80';
   }
 
+  // ─── Command runner ──────────────────────────────────────────────────────────
   async function runCommand(raw){
     const cmd=raw.trim().toLowerCase();
     const args=raw.trim().split(' ').slice(1).join(' ');
@@ -63,6 +182,8 @@
 
     switch(true){
       case cmd==='help':{
+        // Help content allocated lazily
+        const {CMD_DESCS} = getCommandData();
         printAscii(`  ╔═══════════════════════════════════════╗\n  ║   wahyu@portfolio — command list      ║\n  ╚═══════════════════════════════════════╝`);
         const cats=[{label:'// info',cmds:['whoami','neofetch','skills','projects','contact']},{label:'// fun',cmds:['coffee','sleep','party','dance','hug','flip','joke','fact']},{label:'// system',cmds:['clear','ls','pwd','date','ping','echo [text]']},{label:'// secret',cmds:['matrix','sudo','konami','hire me','yes','cat secret.txt']}];
         for(const cat of cats){await wait(40);printLine(`<span style="color:var(--accent);opacity:0.6">${cat.label}</span>`,'out');for(const c of cat.cmds){await wait(25);const base=c.split(' ')[0];const desc=CMD_DESCS[c]||CMD_DESCS[base]||'';printLine(`  <span style="color:var(--accent);min-width:120px;display:inline-block">${c}</span><span style="color:rgba(255,255,255,0.3)">— ${desc}</span>`,'out');}printLine('','blank');}
@@ -80,15 +201,17 @@
         break;}
 
       case cmd==='skills':{
-        const sk=[['Laravel',100,'#f72585'],['Tailwind CSS',92,'#38bdf8'],['PHP',90,'#c792ea'],['React',80,'#61dafb'],['MySQL',75,'#4ade80'],['Bootstrap',70,'#7c3aed'],['Node.js',50,'#84cc16']];
+        // Skills array fetched lazily
+        const sk = getSkills();
         printLine('<span style="color:var(--accent)">// tech stack</span>','out');printLine('','blank');
         for(const[name,pct,color]of sk){await wait(60);const f=Math.round(pct/5);const bar='█'.repeat(f)+'░'.repeat(20-f);printLine(`  <span style="min-width:130px;display:inline-block;color:rgba(255,255,255,0.7)">${name}</span><span style="color:${color};letter-spacing:1px">${bar}</span> <span style="color:rgba(255,255,255,0.3)">${pct}%</span>`,'out');}
         printLine('','blank');printLine('<span style="color:rgba(255,255,255,0.3)">// always learning something new 📚</span>','out');
         break;}
 
       case cmd==='projects':{
+        // Projects array fetched lazily
+        const projs = getProjects();
         printLine('<span style="color:var(--accent)">// projects</span>','out');printLine('','blank');
-        const projs=[{name:'mokaraja.net',desc:"Freelance web projects",stack:'Laravel · MySQL',status:'🟢 live'},{name:'Portfolio v3',desc:"This site you're on!",stack:'HTML · CSS · JS',status:'🟢 live'},{name:'Coming soon…',desc:'Next big project',stack:'???',status:'🟡 building'}];
         for(const p of projs){await wait(80);printLine(`  <span style="color:var(--accent);font-weight:700">${p.name}</span> <span style="color:rgba(255,255,255,0.25)">—</span> <span style="color:rgba(255,255,255,0.5)">${p.desc}</span>`,'out');printLine(`  <span style="color:rgba(255,255,255,0.3)">stack:</span> <span style="color:var(--accent2)">${p.stack}</span>  <span style="color:rgba(255,255,255,0.3)">status:</span> <span style="color:rgba(255,255,255,0.6)">${p.status}</span>`,'out');printLine('','blank');}
         break;}
 
@@ -111,13 +234,15 @@
         break;}
 
       case cmd==='joke':{
-        const jokes=[['Why do programmers prefer dark mode?','Because light attracts bugs! 🐛'],['How do you comfort a JavaScript bug?','You console it. 😂'],['Why did the developer quit?',"Because they didn't get arrays. 💀"],['What\'s a programmer\'s favorite snack?','Microchips! 🍟'],['Why do Java developers wear glasses?','Because they don\'t C#! 👓'],['A SQL query walks into a bar...','...walks up to two tables and asks: "Can I JOIN you?" 🍺']];
+        // Jokes array allocated lazily on first use
+        const jokes = getJokes();
         const[setup,punchline]=jokes[Math.floor(Math.random()*jokes.length)];
         printLine(`  🎤 ${setup}`,'out');await wait(900);printLine(`  <span style="color:#fbbf24">→ ${punchline}</span>`,'out','warn');printLine('','blank');printLine('<span style="color:rgba(255,255,255,0.3)">type <span style="color:var(--accent)">joke</span> again for another one</span>','out');
         break;}
 
       case cmd==='fact':{
-        const facts=['The first computer bug was an actual bug — a moth found inside a Harvard Mark II in 1947. 🦗','JavaScript was created in just 10 days by Brendan Eich in 1995. 😱','"Bug" in code was popularized by Grace Hopper after literally finding a moth in a relay. 🐛','The average web page in 2024 is over 2.5MB — heavier than Doom (1993). 🎮','PHP originally stood for "Personal Home Page". Now: "PHP: Hypertext Preprocessor". 🔄','Stack Overflow was founded in 2008. Before that, devs figured things out alone. 😰'];
+        // Facts array allocated lazily on first use
+        const facts = getFacts();
         const fact=facts[Math.floor(Math.random()*facts.length)];
         printLine('<span style="color:var(--accent)">// random dev fact</span>','out');await wait(300);printLine(`  💡 ${fact}`,'out');printLine('','blank');printLine('<span style="color:rgba(255,255,255,0.3)">type <span style="color:var(--accent)">fact</span> again for another</span>','out');
         break;}
@@ -250,16 +375,24 @@
     ],18);
   }
 
+  // ─── Input handlers ──────────────────────────────────────────────────────────
   termInput.addEventListener('keydown',async(e)=>{
     if(e.key==='Enter'){const val=termInput.value;termInput.value='';hideAC();if(!val.trim())return;await runCommand(val);}
     else if(e.key==='ArrowUp'){e.preventDefault();histIdx=Math.min(histIdx+1,history.length-1);termInput.value=history[histIdx]||'';}
     else if(e.key==='ArrowDown'){e.preventDefault();histIdx=Math.max(histIdx-1,-1);termInput.value=histIdx===-1?'':history[histIdx];}
-    else if(e.key==='Tab'){e.preventDefault();const match=Object.keys(COMMANDS).find(c=>c.startsWith(termInput.value.toLowerCase())&&c!==termInput.value.toLowerCase());if(match)termInput.value=match;hideAC();}
+    else if(e.key==='Tab'){
+      e.preventDefault();
+      const {COMMANDS} = getCommandData();
+      const match=Object.keys(COMMANDS).find(c=>c.startsWith(termInput.value.toLowerCase())&&c!==termInput.value.toLowerCase());
+      if(match)termInput.value=match;
+      hideAC();
+    }
     else if(e.key==='Escape'){hideAC();}
   });
 
   termInput.addEventListener('input',()=>{
     const val=termInput.value.trim().toLowerCase();if(!val){hideAC();return;}
+    const {CMD_DESCS} = getCommandData(); // lazily resolved
     const matches=Object.entries(CMD_DESCS).filter(([cmd])=>cmd.startsWith(val)&&cmd!==val);
     if(!matches.length){hideAC();return;}
     termAC.innerHTML='';
@@ -273,6 +406,7 @@
   });
   function hideAC(){termAC.classList.remove('show');termAC.innerHTML='';}
 
+  // ─── Egg overlay ─────────────────────────────────────────────────────────────
   function showEgg(emoji,title,body,isHireMe=false){
     eggEmoji.textContent=emoji;eggTitle.textContent=title;eggBody.innerHTML=body.replace(/\n/g,'<br>');
     if(isHireMe)eggBody.innerHTML+=`<br><br><a href="https://wa.me/+62895704220904" style="color:var(--accent);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.75rem;border:1px solid rgba(0,245,212,0.3);padding:0.4rem 1rem;border-radius:4px;display:inline-block;margin-top:0.5rem;transition:all 0.2s" onmouseover="this.style.background='rgba(0,245,212,0.1)'" onmouseout="this.style.background='transparent'">📱 Open WhatsApp</a>`;
@@ -281,6 +415,7 @@
   eggClose.addEventListener('click',()=>eggOverlay.classList.remove('active'));
   eggOverlay.addEventListener('click',(e)=>{if(e.target===eggOverlay)eggOverlay.classList.remove('active');});
 
+  // ─── Emoji rain ───────────────────────────────────────────────────────────────
   function emojiRainBurst(emojis,count){
     for(let i=0;i<count;i++){setTimeout(()=>{const el=document.createElement('div');el.className='rain-emoji';el.textContent=emojis[Math.floor(Math.random()*emojis.length)];el.style.left=Math.random()*100+'vw';el.style.animationDuration=(1.5+Math.random()*2)+'s';el.style.fontSize=(1+Math.random()*1.5)+'rem';emojiRainEl.appendChild(el);setTimeout(()=>el.remove(),4000);},i*60);}
   }
@@ -299,24 +434,41 @@
     }
   }
 
+  // ─── Matrix — canvas + resize only wired on first call ───────────────────────
   function startMatrix(){
-    if(matrixActive)return;matrixActive=true;matrixCanvas.classList.add('active');
-    const ctx=matrixCanvas.getContext('2d');matrixCanvas.width=window.innerWidth;matrixCanvas.height=window.innerHeight;
-    const cols=Math.floor(matrixCanvas.width/14);const drops=Array(cols).fill(1);
-    const chars='アイウエオカキクケコサシスセソ0123456789ABCDEF</>{}[]';
-    function draw(){ctx.fillStyle='rgba(0,0,0,0.04)';ctx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);drops.forEach((y,i)=>{const ch=chars[Math.floor(Math.random()*chars.length)];ctx.fillStyle=Math.random()>0.95?'#fff':'rgba(0,245,212,0.8)';ctx.font='13px JetBrains Mono,monospace';ctx.fillText(ch,i*14,y*14);if(y*14>matrixCanvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++;});matrixRAF=requestAnimationFrame(draw);}
+    if(matrixActive)return;
+    matrixActive=true;
+    matrixCanvas.classList.add('active');
+    const {ctx, chars} = getMatrixCtx(); // lazy-initialises canvas context & resize listener
+    const cols=Math.floor(matrixCanvas.width/14);
+    const drops=Array(cols).fill(1);
+    function draw(){
+      ctx.fillStyle='rgba(0,0,0,0.04)';ctx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
+      drops.forEach((y,i)=>{
+        const ch=chars[Math.floor(Math.random()*chars.length)];
+        ctx.fillStyle=Math.random()>0.95?'#fff':'rgba(0,245,212,0.8)';
+        ctx.font='13px JetBrains Mono,monospace';
+        ctx.fillText(ch,i*14,y*14);
+        if(y*14>matrixCanvas.height&&Math.random()>0.975)drops[i]=0;
+        drops[i]++;
+      });
+      matrixRAF=requestAnimationFrame(draw);
+    }
     draw();
-    const exitMatrix=()=>{matrixActive=false;matrixCanvas.classList.remove('active');cancelAnimationFrame(matrixRAF);const c2=matrixCanvas.getContext('2d');c2.clearRect(0,0,matrixCanvas.width,matrixCanvas.height);matrixCanvas.removeEventListener('click',exitMatrix);printLine('<span style="color:#4ade80">// you escaped the matrix. welcome back, neo. 😎</span>','out','success');printLine('','blank');};
+    const exitMatrix=()=>{
+      matrixActive=false;
+      matrixCanvas.classList.remove('active');
+      cancelAnimationFrame(matrixRAF);
+      const c2=matrixCanvas.getContext('2d');
+      c2.clearRect(0,0,matrixCanvas.width,matrixCanvas.height);
+      matrixCanvas.removeEventListener('click',exitMatrix);
+      printLine('<span style="color:#4ade80">// you escaped the matrix. welcome back, neo. 😎</span>','out','success');
+      printLine('','blank');
+    };
     matrixCanvas.addEventListener('click',exitMatrix);
   }
 
-  // Konami code
-  const KONAMI=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-  let konamiIdx=0;
-  document.addEventListener('keydown',(e)=>{
-    if(e.key===KONAMI[konamiIdx]){konamiIdx++;if(konamiIdx===KONAMI.length){konamiIdx=0;emojiRainBurst(['⭐','🌟','✨','💫','🎉','🎊','🥳','🎆','🎇'],50);showEgg('🕹️','KONAMI CODE!','↑↑↓↓←→←→BA\n\nYOU FOUND THE KONAMI CODE!\n\n+30 Lives added to your portfolio.\nWahyu would be very impressed. 😤');printLine('<span style="color:#fbbf24">⭐ KONAMI CODE ACTIVATED! 🕹️</span>','out','warn');}}else{konamiIdx=0;}
-  });
-
+  // ─── Boot ─────────────────────────────────────────────────────────────────────
   printWelcome();
   setTimeout(()=>termInput.focus(),500);
 })();
