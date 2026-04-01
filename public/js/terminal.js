@@ -470,5 +470,5 @@
 
   // ─── Boot ─────────────────────────────────────────────────────────────────────
   printWelcome();
-  setTimeout(()=>termInput.focus(),500);
+//   setTimeout(()=>termInput.focus(),500);
 })();
