@@ -1,52 +1,341 @@
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ============================================
+   CARTOON STYLE OVERRIDE
+   Tambahkan file ini SETELAH styles.css
+   <link rel="stylesheet" href="public/css/cartoon.css" />
+   ============================================ */
 
-    :root {
-      --bg: #0a0a0f;
-      --bg2: #10101a;
-      --bg3: #16162a;
-      --accent: #00f5d4;
-      --accent2: #7c3aed;
-      --accent3: #f72585;
-      --text: #e2e8f0;
-      --muted: #64748b;
-      --border: rgba(255,255,255,0.07);
-      --card: rgba(255,255,255,0.04);
-      --aura-intensity: 0;
-      --px-green: #00f5d4;
-      --px-purple: #7c3aed;
-      --px-pink: #f72585;
-      --px-amber: #fbbf24;
-      --px-blue: #38bdf8;
-      --px-dark1: #12121e;
-      --px-dark2: #1a1a2e;
-      /* Parallax CSS vars */
-      --scroll-y: 0px;
-      --mouse-x: 0;
-      --mouse-y: 0;
-    }
+/* ── 1. RE-THEME COLOR PALETTE (CARTOON PALETTE) ── */
+:root {
+  --bg: #fef6e4 !important;
+  --bg2: #fff3d6 !important;
+  --bg3: #ffe6a7 !important;
+  --accent: #ff6b9d !important;
+  --accent2: #6c5ce7 !important;
+  --accent3: #ffd23f !important;
+  --text: #1a1a2e !important;
+  --muted: #6b6b8a !important;
+  --border: rgba(26,26,46,0.15) !important;
+  --card: rgba(255,255,255,0.6) !important;
+  --px-green: #4dccbd !important;
+  --px-purple: #a06cd5 !important;
+  --px-pink: #ff6b9d !important;
+  --px-amber: #ffd23f !important;
+  --px-blue: #4dccbd !important;
+  --px-dark1: #fef6e4 !important;
+  --px-dark2: #fff3d6 !important;
+}
 
-    html { scroll-behavior: smooth; }
+/* ── 2. GLOBAL ── */
+body {
+  font-family: 'Baloo 2', 'Comic Sans MS', cursive, sans-serif !important;
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+body::before { display: none !important; } /* remove noise texture */
+#star-field, #parallax-bg, .parallax-grid, .float-code, .matrix-canvas {
+  opacity: 0.15 !important;
+  filter: saturate(2) hue-rotate(20deg);
+}
 
-    body {
-      font-family: 'Syne', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      cursor: none;
-      transition: background 0.3s;
-    }
+/* ── 3. TYPOGRAPHY ── */
+h1, h2, h3, .nav-logo, .section-label, .timeline-role, .track-name {
+  font-family: 'Baloo 2', 'Comic Sans MS', cursive, sans-serif !important;
+}
+h1 .highlight, h2, .secret-title .g {
+  -webkit-text-fill-color: initial !important;
+  background: none !important;
+  color: var(--accent) !important;
+  -webkit-text-stroke: 2px var(--text);
+  text-shadow: 5px 5px 0 var(--accent3);
+}
+.section-label {
+  color: var(--accent2) !important;
+  text-shadow: none !important;
+}
 
-    /* ═══ MUSIC-REACTIVE BODY AURA ═══ */
-    body.music-playing::after {
-      content: '';
-      position: fixed; inset: 0;
-      pointer-events: none; z-index: 0;
-      background:
-        radial-gradient(ellipse 60% 40% at 0% 50%, rgba(0,245,212,calc(var(--aura-intensity)*0.06)) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 100% 50%, rgba(124,58,237,calc(var(--aura-intensity)*0.06)) 0%, transparent 70%),
-        radial-gradient(ellipse 80% 30% at 50% 0%, rgba(247,37,133,calc(var(--aura-intensity)*0.04)) 0%, transparent 70%);
-      animation: aura-breathe 2s ease-in-out infinite alternate;
-    }
+/* ── 4. BUTTONS — COMIC POP STYLE ── */
+.btn, .ctrl-btn, .secret-close-btn, .term-egg-close, .panel-close,
+.music-toggle, .nav-hamburger span {
+  border-radius: 16px !important;
+}
+.btn {
+  border: 3px solid var(--text) !important;
+  box-shadow: 5px 5px 0 var(--text) !important;
+  font-weight: 800 !important;
+  transition: transform .15s ease, box-shadow .15s ease !important;
+  animation: none !important;
+}
+.btn:hover {
+  transform: translate(-2px,-3px) !important;
+  box-shadow: 7px 8px 0 var(--text) !important;
+}
+.btn:active {
+  transform: translate(3px,3px) !important;
+  box-shadow: 2px 2px 0 var(--text) !important;
+}
+.btn-primary {
+  background: var(--accent3) !important;
+  color: var(--text) !important;
+}
+.btn-outline {
+  background: #fff !important;
+  color: var(--text) !important;
+  border-color: var(--text) !important;
+}
+
+/* ── 5. CARDS / PANELS — THICK BORDER + OFFSET SHADOW ── */
+.skill-card, .timeline-item, .secret-card, .music-panel,
+.code-window, .picture-window, .terminal-window, .spotify-panel,
+.px-bubble, .secret-terminal {
+  border: 3px solid var(--text) !important;
+  border-radius: 18px !important;
+  box-shadow: 6px 6px 0 var(--text) !important;
+  background: #fffdf7 !important;
+}
+.skill-card:hover, .secret-card:hover {
+  transform: translateY(-5px) rotate(-1deg) !important;
+  box-shadow: 8px 10px 0 var(--text) !important;
+}
+.skill-card::before { display: none !important; }
+
+/* timeline items don't need offset shadow (would look cluttered) */
+.timeline-item {
+  box-shadow: none !important;
+  border-radius: 14px !important;
+  padding: 1rem 1rem 2rem 2.5rem !important;
+  margin-bottom: 0.5rem;
+}
+.timeline::before {
+  background: var(--accent2) !important;
+  width: 4px !important;
+  border-radius: 4px;
+  box-shadow: none !important;
+}
+.timeline-item::before {
+  background: var(--accent3) !important;
+  border: 3px solid var(--text) !important;
+  box-shadow: none !important;
+  width: 14px !important;
+  height: 14px !important;
+  left: -7px !important;
+}
+
+/* ── 6. SKILL BARS — CANDY STRIPES ── */
+.skill-level {
+  border: 2px solid var(--text) !important;
+  border-radius: 8px !important;
+  height: 8px !important;
+  background: #fff !important;
+}
+.skill-level-fill {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--accent3), var(--accent3) 8px,
+    var(--accent) 8px, var(--accent) 16px
+  ) !important;
+  box-shadow: none !important;
+}
+
+/* ── 7. AVATAR / FLIP CARD ── */
+.avatar-ring {
+  border: none !important;
+  background: var(--accent3) !important;
+  padding: 4px !important;
+  box-shadow: 6px 6px 0 var(--text) !important;
+  animation: cartoonWiggle 3s ease-in-out infinite !important;
+}
+@keyframes cartoonWiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+.avatar-inner { background: var(--bg3) !important; }
+.badge {
+  border: 2px solid var(--text) !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+  box-shadow: 3px 3px 0 var(--text) !important;
+}
+.badge-a { background: var(--px-green) !important; color: var(--text) !important; }
+.badge-b { background: var(--px-purple) !important; color: #fff !important; }
+.badge-c { background: var(--accent3) !important; color: var(--text) !important; }
+
+.picture-window-body {
+  background: linear-gradient(135deg, var(--bg3) 0%, #ffe0f0 50%, var(--bg2) 100%) !important;
+}
+.picture-window-body::before { display: none !important; }
+.status-dot {
+  background: var(--px-green) !important;
+  border: 2px solid var(--text) !important;
+}
+.status-text strong { color: var(--accent) !important; }
+
+/* code window text colors keep contrast on light bg */
+.code-body, .px-editor { color: var(--text) !important; }
+.window-bar, .picture-window-bar, .term-titlebar, .px-editor-bar {
+  background: var(--bg3) !important;
+  border-bottom: 3px solid var(--text) !important;
+}
+
+/* ── 8. PIXEL ROOM ── */
+.pixel-scene { background: var(--bg3) !important; }
+.scene-wrap {
+  border: 4px solid var(--text) !important;
+  box-shadow: 8px 8px 0 var(--text) !important;
+}
+.scene-wrap::after, .scene-wrap::before { display: none !important; }
+.px-wall-grid { background-image: none !important; }
+.px-floor {
+  background: repeating-linear-gradient(90deg, var(--accent3) 0px, var(--accent3) 60px, var(--bg3) 60px, var(--bg3) 120px) !important;
+  border-top: 4px solid var(--text) !important;
+}
+.px-monitor {
+  border: 5px solid var(--text) !important;
+  box-shadow: 6px 6px 0 var(--text) !important;
+  background: #1a1a2e !important;
+}
+.px-monitor::before { display: none !important; }
+.px-poster, .px-clock-face, .px-mug-body, .px-pot, .px-keyboard, .px-key,
+.px-monitor-side, .px-notif, .px-head, .px-body, .px-arm, .px-av-head,
+.px-av-body, .px-av-arm, .px-av-leg, .px-av-shoe {
+  border-width: 2px !important;
+  border-color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+/* ── 9. TERMINAL ── */
+.terminal-window {
+  border: 4px solid var(--text) !important;
+  box-shadow: 8px 8px 0 var(--text) !important;
+  background: #fffdf7 !important;
+}
+.terminal-window::after { display: none !important; }
+.term-output, .term-input, .term-title, .term-tab, .term-uptime {
+  color: var(--text) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+.term-line.out .term-text { color: var(--muted) !important; }
+.term-line.out.success .term-text { color: #2dba6e !important; }
+.term-line.out.error .term-text { color: #ff5f57 !important; }
+.term-line.out.accent .term-text { color: var(--accent) !important; }
+.term-input-row { background: var(--bg3) !important; border-top: 3px solid var(--text) !important; }
+.term-prompt-static, .term-line.cmd .term-prompt { color: var(--accent2) !important; }
+
+/* hint chips */
+.hint-chip {
+  border: 2px solid var(--text) !important;
+  border-radius: 999px !important;
+  box-shadow: 3px 3px 0 var(--text) !important;
+  background: var(--px-purple) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+.hint-chip:hover {
+  transform: translate(-2px,-2px) !important;
+  box-shadow: 5px 5px 0 var(--text) !important;
+}
+
+/* ── 10. MUSIC PLAYER / GREETING BUBBLE ── */
+.music-panel, .px-bubble {
+  background: #fffdf7 !important;
+}
+.album-art {
+  border: 3px solid var(--text) !important;
+  box-shadow: 4px 4px 0 var(--text) !important;
+}
+.track-name, .track-artist { color: var(--text) !important; }
+.progress-fill, .vol-fill, .term-progress-fill, .viz-bar {
+  background: var(--accent) !important;
+}
+.px-bubble, .px-bubble-text, .px-bubble-hint { color: var(--text) !important; }
+.px-bubble::after { border-top-color: var(--text) !important; }
+.px-bubble::before { border-top-color: #fffdf7 !important; }
+
+/* ── 11. CONTACT LINKS ── */
+.contact-link {
+  border: 3px solid var(--text) !important;
+  border-radius: 999px !important;
+  box-shadow: 4px 4px 0 var(--text) !important;
+  background: var(--accent3) !important;
+  color: var(--text) !important;
+  font-weight: 800 !important;
+}
+.contact-link:hover {
+  background: var(--px-green) !important;
+  transform: translate(-2px,-2px) !important;
+  box-shadow: 6px 6px 0 var(--text) !important;
+}
+
+/* ── 12. SECRET SECTION ── */
+.secret-banner { background: var(--bg2) !important; }
+.secret-banner::before { display: none !important; }
+.secret-desc, .secret-card-body { color: var(--muted) !important; }
+.secret-badge {
+  border: 2px solid var(--text) !important;
+  background: var(--accent3) !important;
+  color: var(--text) !important;
+  box-shadow: 3px 3px 0 var(--text) !important;
+}
+.secret-card-body .pk { color: var(--accent) !important; }
+.secret-card-body .cy { color: var(--px-green) !important; }
+.tp, .tv, .to, .tpk, .tc { font-family: 'JetBrains Mono', monospace; }
+.tv { color: #2dba6e !important; }
+.tpk { color: var(--accent) !important; }
+.tp { color: var(--accent2) !important; }
+.tc { color: var(--text) !important; }
+.to { color: var(--muted) !important; }
+
+/* ── 13. SECTION BACKGROUND BLOBS — soften ── */
+.drift-circle { filter: blur(60px) !important; opacity: 0.5 !important; }
+
+/* ── 14. CURSOR ── */
+.cursor { background: var(--accent3) !important; }
+.cursor-ring { border-color: var(--accent2) !important; }
+
+/* ── 15. PROJECT CARDS ── */
+.project-card {
+  border: 3px solid var(--text) !important;
+  border-radius: 16px !important;
+  box-shadow: 5px 5px 0 var(--text) !important;
+  background: #fffdf7 !important;
+}
+.project-card:hover {
+  transform: translateY(-4px) rotate(-1deg) !important;
+  box-shadow: 7px 8px 0 var(--text) !important;
+}
+.tag {
+  border: 2px solid var(--text) !important;
+  border-radius: 8px !important;
+  background: var(--bg3) !important;
+}
+.badge-done { background: #d4f7e0 !important; color: #1a7a45 !important; border:2px solid var(--text) !important; }
+.badge-wip  { background: #fff3c4 !important; color: #92400e !important; border:2px solid var(--text) !important; }
+.badge-plan { background: #dbeaff !important; color: #1e40af !important; border:2px solid var(--text) !important; }
+
+.card-title { font-size: 15px; font-weight: 600; margin: 0; }
+.card-desc  { font-size: 13px; color: #6b7280; margin: 0; line-height: 1.6; }
+
+.card-tags  { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  font-size: 11px; padding: 3px 8px;
+  background: #f9fafb; border: 1px solid #e5e7eb;
+  border-radius: 6px; color: #374151;
+  font-family: monospace;
+}
+
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: auto; padding-top: 8px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.link-btn {
+  font-size: 12px; padding: 4px 10px;
+  border: 1px solid #e5e7eb; border-radius: 6px;
+  color: #6b7280; text-decoration: none;
+}
+.link-btn:hover { background: #f3f4f6; color: #111827; }
+
+.stars { font-size: 12px; color: #9ca3af; }
     @keyframes aura-breathe { from { opacity: 0.6; } to { opacity: 1; } }
 
     .beat-flash {
