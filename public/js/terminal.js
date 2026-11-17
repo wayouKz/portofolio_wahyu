@@ -302,7 +302,7 @@
         break;}
 
       case cmd==='cat secret.txt':{
-        showEgg('🔐','command line tersembunyi','Wahyu see you found the secret file! 👀\n\nHere\'s a little surprise for you:\n\n"the most special person in the world is named Miranda 💕"');
+        showEgg('🔐','command line tersembunyi','Wahyu see you found the secret file! 👀\n\nHere\'s a little surprise for you:\n\n"no someone special"');
         break;}
 
       case cmd.startsWith('cd'):{
