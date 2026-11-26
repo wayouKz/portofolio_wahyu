@@ -1,0 +1,5 @@
+{
+  "name": "porto",
+  "compatibility_date": "2026-11-23",
+  "main": "worker/worker.js"
+}

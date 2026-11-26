@@ -90,12 +90,12 @@ window.__onIdle(function () {
   // ── 2. BACKGROUND ORBS ─────────────────────────────
   var parallaxBg  = document.getElementById('parallax-bg');
   var orbConfigs  = [
-    { color: 'rgba(0,245,212,0.06)',  size: 600, x: '10%', y: '20%', dur: 18, depth: 0.05 },
-    { color: 'rgba(124,58,237,0.08)', size: 500, x: '80%', y: '30%', dur: 22, depth: 0.08 },
-    { color: 'rgba(247,37,133,0.05)', size: 400, x: '60%', y: '70%', dur: 15, depth: 0.03 },
-    { color: 'rgba(0,245,212,0.04)',  size: 700, x: '30%', y: '80%', dur: 25, depth: 0.06 },
-    { color: 'rgba(124,58,237,0.05)', size: 350, x: '90%', y: '80%', dur: 19, depth: 0.04 },
-    { color: 'rgba(251,191,36,0.03)', size: 300, x: '5%',  y: '70%', dur: 20, depth: 0.02 },
+    { color: 'rgba(255,61,154,0.06)',  size: 600, x: '10%', y: '20%', dur: 18, depth: 0.05 },
+    { color: 'rgba(140,60,255,0.08)', size: 500, x: '80%', y: '30%', dur: 22, depth: 0.08 },
+    { color: 'rgba(255,122,47,0.05)', size: 400, x: '60%', y: '70%', dur: 15, depth: 0.03 },
+    { color: 'rgba(255,61,154,0.04)',  size: 700, x: '30%', y: '80%', dur: 25, depth: 0.06 },
+    { color: 'rgba(140,60,255,0.05)', size: 350, x: '90%', y: '80%', dur: 19, depth: 0.04 },
+    { color: 'rgba(255,201,77,0.03)', size: 300, x: '5%',  y: '70%', dur: 20, depth: 0.02 },
   ];
 
   var orbs = orbConfigs.map(function (cfg) {
@@ -137,7 +137,7 @@ window.__onIdle(function () {
         'left:'              + x   + '%;',
         'animation-duration:' + dur + 's;',
         'animation-delay:-'  + (Math.random() * dur) + 's;',
-        'color:rgba(0,245,212,' + (0.04 + Math.random() * 0.08) + ');',
+        'color:rgba(255,61,154,' + (0.04 + Math.random() * 0.08) + ');',
         'font-size:'         + (0.55 + Math.random() * 0.2) + 'rem;',
       ].join('');
       document.body.appendChild(el);
@@ -154,12 +154,12 @@ window.__onIdle(function () {
   var heroLayer = document.getElementById('heroLayer1');
   if (heroLayer) {
     var shapes = [
-      { type: 'circle',   size: 120, x: '15%', y: '25%', color: 'rgba(0,245,212,0.04)',  border: 'rgba(0,245,212,0.12)',  depth: 0.15, delay: 0.2 },
-      { type: 'circle',   size: 60,  x: '85%', y: '60%', color: 'rgba(124,58,237,0.06)', border: 'rgba(124,58,237,0.18)', depth: 0.25, delay: 0.5 },
-      { type: 'square',   size: 80,  x: '75%', y: '20%', color: 'transparent',           border: 'rgba(247,37,133,0.15)', depth: 0.1,  delay: 0.3 },
-      { type: 'circle',   size: 200, x: '5%',  y: '70%', color: 'rgba(0,245,212,0.02)',  border: 'rgba(0,245,212,0.06)',  depth: 0.05, delay: 0.8 },
-      { type: 'square',   size: 40,  x: '90%', y: '40%', color: 'rgba(251,191,36,0.05)', border: 'rgba(251,191,36,0.2)',  depth: 0.3,  delay: 0.1 },
-      { type: 'triangle', size: 50,  x: '50%', y: '85%', color: 'transparent',           border: 'rgba(124,58,237,0.2)',  depth: 0.2,  delay: 0.6 },
+      { type: 'circle',   size: 120, x: '15%', y: '25%', color: 'rgba(255,61,154,0.04)',  border: 'rgba(255,61,154,0.12)',  depth: 0.15, delay: 0.2 },
+      { type: 'circle',   size: 60,  x: '85%', y: '60%', color: 'rgba(140,60,255,0.06)', border: 'rgba(140,60,255,0.18)', depth: 0.25, delay: 0.5 },
+      { type: 'square',   size: 80,  x: '75%', y: '20%', color: 'transparent',           border: 'rgba(255,122,47,0.15)', depth: 0.1,  delay: 0.3 },
+      { type: 'circle',   size: 200, x: '5%',  y: '70%', color: 'rgba(255,61,154,0.02)',  border: 'rgba(255,61,154,0.06)',  depth: 0.05, delay: 0.8 },
+      { type: 'square',   size: 40,  x: '90%', y: '40%', color: 'rgba(255,201,77,0.05)', border: 'rgba(255,201,77,0.2)',  depth: 0.3,  delay: 0.1 },
+      { type: 'triangle', size: 50,  x: '50%', y: '85%', color: 'transparent',           border: 'rgba(140,60,255,0.2)',  depth: 0.2,  delay: 0.6 },
     ];
 
     shapes.forEach(function (s, idx) {
@@ -318,7 +318,7 @@ window.__onIdle(function () {
     'background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));',
     'z-index:9999;pointer-events:none;',
     'transition:width 0.1s linear;',
-    'box-shadow:0 0 8px rgba(0,245,212,0.6);',
+    'box-shadow:0 0 8px rgba(255,61,154,0.6);',
   ].join('');
   document.body.appendChild(progressBar);
 
@@ -424,13 +424,13 @@ var countBadge    = document.getElementById('trackCountBadge');
 var pxnowPlaying  = document.getElementById('pxNowPlaying');
 
 var tracks = [
-  { name: 'JVKE - golden hour',                              artist: 'Wahyu · Late Night', emoji: '🌙', color: 'linear-gradient(135deg,#f72585,#7c3aed)', src: 'music/JVKE - golden hour (Lyrics).mp3' },
-  { name: 'Golden Brown',                                    artist: 'Wahyu · Late Night', emoji: '🎵', color: 'linear-gradient(135deg,#7c3aed,#00f5d4)', src: 'music/Golden Brown.mp3' },
-  { name: 'JVK - her',                                       artist: 'Wahyu · Late Night', emoji: '💫', color: 'linear-gradient(135deg,#f72585,#7c3aed)', src: 'music/JVK - her.mp3' },
-  { name: 'The 1975 - About You',                            artist: 'Wahyu · Late Night', emoji: '😔', color: 'linear-gradient(135deg,#0d1f2d,#7c3aed)', src: 'music/The 1975 - About You.mp3' },
-  { name: 'Perfection _ Sempurna English Version - BBIBEEB', artist: 'Wahyu · Late Night', emoji: '✨', color: 'linear-gradient(135deg,#f72585,#ff6db3)', src: 'music/Perfection _ Sempurna English Version - BBIBEEB.mp3' },
-  { name: 'Hantu _ Multo Indonesian Version - BBIBEEB',      artist: 'Wahyu · Late Night', emoji: '👻', color: 'linear-gradient(135deg,#1a1040,#f72585)', src: 'music/Hantu _ Multo Indonesian Version - BBIBEEB.mp3' },
-  { name: 'Sparkle (Instrumental Only)',                      artist: 'Wahyu · Late Night', emoji: '🎆', color: 'linear-gradient(135deg,#1a1040,#f72585)', src: 'music/Sparkle (Instrumental Only).mp3' },
+  { name: 'JVKE - golden hour',                              artist: 'Wahyu · Late Night', emoji: '🌙', color: 'linear-gradient(135deg,#ff7a2f,#8c3cff)', src: 'music/JVKE - golden hour (Lyrics).mp3' },
+  { name: 'Golden Brown',                                    artist: 'Wahyu · Late Night', emoji: '🎵', color: 'linear-gradient(135deg,#8c3cff,#ff3d9a)', src: 'music/Golden Brown.mp3' },
+  { name: 'JVK - her',                                       artist: 'Wahyu · Late Night', emoji: '💫', color: 'linear-gradient(135deg,#ff7a2f,#8c3cff)', src: 'music/JVK - her.mp3' },
+  { name: 'The 1975 - About You',                            artist: 'Wahyu · Late Night', emoji: '😔', color: 'linear-gradient(135deg,#0d1f2d,#8c3cff)', src: 'music/The 1975 - About You.mp3' },
+  { name: 'Perfection _ Sempurna English Version - BBIBEEB', artist: 'Wahyu · Late Night', emoji: '✨', color: 'linear-gradient(135deg,#ff7a2f,#ff6db3)', src: 'music/Perfection _ Sempurna English Version - BBIBEEB.mp3' },
+  { name: 'Hantu _ Multo Indonesian Version - BBIBEEB',      artist: 'Wahyu · Late Night', emoji: '👻', color: 'linear-gradient(135deg,#1a1040,#ff7a2f)', src: 'music/Hantu _ Multo Indonesian Version - BBIBEEB.mp3' },
+  { name: 'Sparkle (Instrumental Only)',                      artist: 'Wahyu · Late Night', emoji: '🎆', color: 'linear-gradient(135deg,#1a1040,#ff7a2f)', src: 'music/Sparkle (Instrumental Only).mp3' },
 ];
 
 var currentTrack = 0, isPlaying = false, shuffleOn = false, repeatOn = false;
@@ -542,7 +542,7 @@ function updateAura() {
   var avatarRing = document.querySelector('.avatar-ring');
   if (avatarRing) avatarRing.style.transform = 'scale(' + (1 + bassIntensity * 0.06) + ')';
 
-  progressFill.style.boxShadow = '0 0 ' + (4 + intensity * 16) + 'px rgba(0,245,212,' + (0.3 + intensity * 0.7) + ')';
+  progressFill.style.boxShadow = '0 0 ' + (4 + intensity * 16) + 'px rgba(255,61,154,' + (0.3 + intensity * 0.7) + ')';
 
   vizBars.forEach(function (bar, idx) {
     var dataIdx = Math.floor(idx * bufferLength / vizBars.length);
@@ -563,13 +563,13 @@ function triggerBeat(intensity) {
   setTimeout(function () { beatFlash.style.opacity = '0'; }, 80);
 
   var nav = document.querySelector('nav');
-  nav.style.borderBottomColor = 'rgba(0,245,212,' + (0.1 + intensity * 0.4) + ')';
+  nav.style.borderBottomColor = 'rgba(255,61,154,' + (0.1 + intensity * 0.4) + ')';
   setTimeout(function () { nav.style.borderBottomColor = ''; }, 200);
 
   if (window.butterflyBeat) window.butterflyBeat();
 
   document.querySelectorAll('.geo-shape').forEach(function (shape) {
-    shape.style.boxShadow = '0 0 ' + (20 + intensity * 30) + 'px rgba(0,245,212,' + (0.1 + intensity * 0.3) + ')';
+    shape.style.boxShadow = '0 0 ' + (20 + intensity * 30) + 'px rgba(255,61,154,' + (0.1 + intensity * 0.3) + ')';
     setTimeout(function () { shape.style.boxShadow = ''; }, 150);
   });
 }
@@ -740,10 +740,10 @@ function closeSecret() {
     window.addEventListener('resize', resize);
 
     var PALETTES = [
-      ['#00f5d4','#7c3aed','#00e5ff'],
-      ['#f72585','#7c3aed','#ff6db3'],
-      ['#00f5d4','#f72585','#a78bfa'],
-      ['#ffbe0b','#00f5d4','#fb5607'],
+      ['#ff3d9a','#8c3cff','#2de2e6'],
+      ['#ff7a2f','#8c3cff','#ff6db3'],
+      ['#ff3d9a','#ff7a2f','#a78bfa'],
+      ['#ffc94d','#ff3d9a','#fb5607'],
     ];
     function rp() { return PALETTES[Math.floor(Math.random() * PALETTES.length)]; }
 
@@ -996,7 +996,7 @@ function closeSecret() {
 
     // ── Particles ──────────────────────────────────
     var pxParticlesEl = document.getElementById('pxParticles');
-    var pxColors      = ['#00f5d4', '#7c3aed', '#f72585', '#38bdf8', '#fbbf24'];
+    var pxColors      = ['#ff3d9a', '#8c3cff', '#ff7a2f', '#2de2e6', '#ffc94d'];
 
     setInterval(function spawnPxParticle() {
       if (!pxParticlesEl) return;
@@ -1110,7 +1110,7 @@ function closeSecret() {
   }
 
   function spawnParticles() {
-    var colors = ['#00f5d4', '#7c3aed', '#f72585', '#fbbf24'];
+    var colors = ['#ff3d9a', '#8c3cff', '#ff7a2f', '#ffc94d'];
     for (var i = 0; i < 6; i++) {
       (function (delay) {
         setTimeout(function () {
@@ -1164,12 +1164,12 @@ function closeSecret() {
 
   setTimeout(function () { triggerWave(); showGreeting(0); }, 800);
 
-  wrap.addEventListener('mouseenter', function () { wrap.style.filter = 'drop-shadow(0 0 12px rgba(0,245,212,0.4))'; });
+  wrap.addEventListener('mouseenter', function () { wrap.style.filter = 'drop-shadow(0 0 12px rgba(255,61,154,0.4))'; });
   wrap.addEventListener('mouseleave', function () { wrap.style.filter = ''; });
 
   var bodyObserver = new MutationObserver(function () {
     wrap.style.filter = document.body.classList.contains('music-playing')
-      ? 'drop-shadow(0 0 16px rgba(0,245,212,0.6)) hue-rotate(0deg)'
+      ? 'drop-shadow(0 0 16px rgba(255,61,154,0.6)) hue-rotate(0deg)'
       : '';
   });
   bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });

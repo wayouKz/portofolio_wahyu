@@ -72,13 +72,13 @@
 
   function getSkills() {
     return getLazyModule('skills', () => [
-      ['Laravel',100,'#f72585'],
-      ['Tailwind CSS',92,'#38bdf8'],
+      ['Laravel',100,'#ff7a2f'],
+      ['Tailwind CSS',92,'#2de2e6'],
       ['PHP',90,'#c792ea'],
-      ['React',80,'#61dafb'],
-      ['MySQL',75,'#4ade80'],
-      ['Bootstrap',70,'#7c3aed'],
-      ['Node.js',50,'#84cc16'],
+      ['React',80,'#2de2e6'],
+      ['MySQL',75,'#2de2e6'],
+      ['Bootstrap',70,'#8c3cff'],
+      ['Node.js',50,'#ffc94d'],
     ]);
   }
 
@@ -110,7 +110,7 @@
             konamiIdx = 0;
             emojiRainBurst(['⭐','🌟','✨','💫','🎉','🎊','🥳','🎆','🎇'], 50);
             showEgg('🕹️','KONAMI CODE!','↑↑↓↓←→←→BA\n\nYOU FOUND THE KONAMI CODE!\n\n+30 Lives added to your portfolio.\nWahyu would be very impressed. 😤');
-            printLine('<span style="color:#fbbf24">⭐ KONAMI CODE ACTIVATED! 🕹️</span>','out','warn');
+            printLine('<span style="color:#ffc94d">⭐ KONAMI CODE ACTIVATED! 🕹️</span>','out','warn');
           }
         } else { konamiIdx = 0; }
       });
@@ -168,7 +168,7 @@
     const pct=wrap.querySelector(`#pp${uid}`);
     const steps=30,step=duration/steps;
     for(let i=1;i<=steps;i++){await wait(step);const p=Math.round((i/steps)*100);fill.style.width=p+'%';pct.textContent=p+'%';termOutput.scrollTop=termOutput.scrollHeight;}
-    await wait(100);pct.textContent='✓ done';pct.style.color='#4ade80';
+    await wait(100);pct.textContent='✓ done';pct.style.color='#2de2e6';
   }
 
   // ─── Command runner ──────────────────────────────────────────────────────────
@@ -192,11 +192,11 @@
 
       case cmd==='whoami':{
         printAscii(` __      __ _ _\n \\ \\    / /| | |\n  \\ \\  / / | | |  __ _   _   _\n   \\ \\/ /  | | | / _\` | | | | |\n    \\  /   | | || (_| | | |_| |\n     \\/    |_|_| \\__,_|  \\__, |\n                           __/ |\n   Muhammad Wahyu Nurdin  |___/`);
-        await printLines([['','blank'],['<span style="color:var(--accent)">●</span> Name    <span style="color:rgba(255,255,255,0.7)">Muhammad Wahyu Nurdin</span>','out'],['<span style="color:var(--accent)">●</span> Alias   <span style="color:var(--accent2)">whoayou</span>','out'],['<span style="color:var(--accent)">●</span> Role    <span style="color:rgba(255,255,255,0.7)">Web Developer 🚀</span>','out'],['<span style="color:var(--accent)">●</span> City    <span style="color:rgba(255,255,255,0.7)">Gorontalo, Indonesia 🌴</span>','out'],['<span style="color:var(--accent)">●</span> Status  <span style="color:#4ade80">● Available for projects</span>','out'],['<span style="color:var(--accent)">●</span> Vibe    <span style="color:rgba(255,255,255,0.7)">coffee ☕  +  code 💻  +  game 🎮</span>','out'],['','blank'],['<span style="color:rgba(255,255,255,0.3)">run <span style="color:var(--accent)">contact</span> to reach me!</span>','out']]);
+        await printLines([['','blank'],['<span style="color:var(--accent)">●</span> Name    <span style="color:rgba(255,255,255,0.7)">Muhammad Wahyu Nurdin</span>','out'],['<span style="color:var(--accent)">●</span> Alias   <span style="color:var(--accent2)">whoayou</span>','out'],['<span style="color:var(--accent)">●</span> Role    <span style="color:rgba(255,255,255,0.7)">Web Developer 🚀</span>','out'],['<span style="color:var(--accent)">●</span> City    <span style="color:rgba(255,255,255,0.7)">Gorontalo, Indonesia 🌴</span>','out'],['<span style="color:var(--accent)">●</span> Status  <span style="color:#2de2e6">● Available for projects</span>','out'],['<span style="color:var(--accent)">●</span> Vibe    <span style="color:rgba(255,255,255,0.7)">coffee ☕  +  code 💻  +  game 🎮</span>','out'],['','blank'],['<span style="color:rgba(255,255,255,0.3)">run <span style="color:var(--accent)">contact</span> to reach me!</span>','out']]);
         break;}
 
       case cmd==='neofetch':{
-        const osl=['<span style="color:var(--accent)">         .-.         </span>  <span style="color:var(--accent)">wahyu</span><span style="color:rgba(255,255,255,0.4)">@</span><span style="color:var(--accent2)">portfolio</span>','<span style="color:var(--accent)">        (o o)        </span>  <span style="color:rgba(255,255,255,0.3)">──────────────────</span>','<span style="color:var(--accent)">       /|=H=|\\       </span>  <span style="color:var(--accent)">OS</span>      <span style="color:rgba(255,255,255,0.6)">Ubuntu 24.04 LTS</span>','<span style="color:var(--accent)">      / |   | \\      </span>  <span style="color:var(--accent)">Shell</span>   <span style="color:rgba(255,255,255,0.6)">bash 5.2</span>','<span style="color:var(--accent)">     /  |   |  \\     </span>  <span style="color:var(--accent)">IDE</span>     <span style="color:rgba(255,255,255,0.6)">VS Code + Neovim</span>','<span style="color:var(--accent)">        |   |        </span>  <span style="color:var(--accent)">Stack</span>   <span style="color:rgba(255,255,255,0.6)">React · Laravel · Tailwind</span>','<span style="color:var(--accent)">        |   |        </span>  <span style="color:var(--accent)">Coffee</span>  <span style="color:rgba(255,255,255,0.6)">∞ cups/day</span>','<span style="color:var(--accent)">       (_) (_)       </span>  <span style="color:var(--accent)">Mood</span>    <span style="color:#4ade80">●</span> <span style="color:rgba(255,255,255,0.6)">vibing</span>','','<span style="color:var(--accent)">                     </span>  <span style="background:#ff5f57;color:#ff5f57">██</span><span style="background:#febc2e;color:#febc2e">██</span><span style="background:#28c840;color:#28c840">██</span><span style="background:#00f5d4;color:#00f5d4">██</span><span style="background:#7c3aed;color:#7c3aed">██</span><span style="background:#f72585;color:#f72585">██</span>'];
+        const osl=['<span style="color:var(--accent)">         .-.         </span>  <span style="color:var(--accent)">wahyu</span><span style="color:rgba(255,255,255,0.4)">@</span><span style="color:var(--accent2)">portfolio</span>','<span style="color:var(--accent)">        (o o)        </span>  <span style="color:rgba(255,255,255,0.3)">──────────────────</span>','<span style="color:var(--accent)">       /|=H=|\\       </span>  <span style="color:var(--accent)">OS</span>      <span style="color:rgba(255,255,255,0.6)">Ubuntu 24.04 LTS</span>','<span style="color:var(--accent)">      / |   | \\      </span>  <span style="color:var(--accent)">Shell</span>   <span style="color:rgba(255,255,255,0.6)">bash 5.2</span>','<span style="color:var(--accent)">     /  |   |  \\     </span>  <span style="color:var(--accent)">IDE</span>     <span style="color:rgba(255,255,255,0.6)">VS Code + Neovim</span>','<span style="color:var(--accent)">        |   |        </span>  <span style="color:var(--accent)">Stack</span>   <span style="color:rgba(255,255,255,0.6)">React · Laravel · Tailwind</span>','<span style="color:var(--accent)">        |   |        </span>  <span style="color:var(--accent)">Coffee</span>  <span style="color:rgba(255,255,255,0.6)">∞ cups/day</span>','<span style="color:var(--accent)">       (_) (_)       </span>  <span style="color:var(--accent)">Mood</span>    <span style="color:#2de2e6">●</span> <span style="color:rgba(255,255,255,0.6)">vibing</span>','','<span style="color:var(--accent)">                     </span>  <span style="background:#ff5f57;color:#ff5f57">██</span><span style="background:#febc2e;color:#febc2e">██</span><span style="background:#28c840;color:#28c840">██</span><span style="background:#ff3d9a;color:#ff3d9a">██</span><span style="background:#8c3cff;color:#8c3cff">██</span><span style="background:#ff7a2f;color:#ff7a2f">██</span>'];
         printLine('','blank');for(const l of osl){await wait(40);printLine(l,'out');}printLine('','blank');
         break;}
 
@@ -230,14 +230,14 @@
 
       case cmd==='sleep':{
         printLine('<span style="color:var(--accent)">// checking wahyu\'s sleep schedule...</span>','out');await wait(400);
-        await printLines([['','blank'],['  😴 Last sleep: <span style="color:#f87171">2:47 AM</span> (yesterday)','out'],['  ⏰ Wake up:    <span style="color:#fbbf24">7:30 AM</span> (too early)','out'],['  🧠 Brain:     <span style="color:#4ade80">surprisingly functional</span>','out'],['','blank'],['<span style="color:rgba(255,255,255,0.3)">// powered by coffee, not sleep</span>','out']]);
+        await printLines([['','blank'],['  😴 Last sleep: <span style="color:#f87171">2:47 AM</span> (yesterday)','out'],['  ⏰ Wake up:    <span style="color:#ffc94d">7:30 AM</span> (too early)','out'],['  🧠 Brain:     <span style="color:#2de2e6">surprisingly functional</span>','out'],['','blank'],['<span style="color:rgba(255,255,255,0.3)">// powered by coffee, not sleep</span>','out']]);
         break;}
 
       case cmd==='joke':{
         // Jokes array allocated lazily on first use
         const jokes = getJokes();
         const[setup,punchline]=jokes[Math.floor(Math.random()*jokes.length)];
-        printLine(`  🎤 ${setup}`,'out');await wait(900);printLine(`  <span style="color:#fbbf24">→ ${punchline}</span>`,'out','warn');printLine('','blank');printLine('<span style="color:rgba(255,255,255,0.3)">type <span style="color:var(--accent)">joke</span> again for another one</span>','out');
+        printLine(`  🎤 ${setup}`,'out');await wait(900);printLine(`  <span style="color:#ffc94d">→ ${punchline}</span>`,'out','warn');printLine('','blank');printLine('<span style="color:rgba(255,255,255,0.3)">type <span style="color:var(--accent)">joke</span> again for another one</span>','out');
         break;}
 
       case cmd==='fact':{
@@ -249,7 +249,7 @@
 
       case cmd==='hire me':{
         printAscii(`  ██╗  ██╗██╗██████╗ ███████╗    ███╗   ███╗███████╗\n  ██║  ██║██║██╔══██╗██╔════╝    ████╗ ████║██╔════╝\n  ███████║██║██████╔╝█████╗      ██╔████╔██║█████╗  \n  ██╔══██║██║██╔══██╗██╔══╝      ██║╚██╔╝██║██╔══╝  \n  ██║  ██║██║██║  ██║███████╗    ██║ ╚═╝ ██║███████╗\n  ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═╝╚══════╝`);
-        await printLines([['','blank'],['  ✅  <span style="color:#4ade80">Open for freelance projects</span>','out'],['  ✅  <span style="color:#4ade80">Available for part-time work</span>','out'],['  ✅  <span style="color:#4ade80">Open to full-time opportunities</span>','out'],['','blank'],['  💼  Stack: <span style="color:var(--accent2)">React · Laravel · Tailwind · PHP · MySQL</span>','out'],['  📍  Location: <span style="color:rgba(255,255,255,0.6)">Gorontalo, Indonesia 🌴 (remote ok!)</span>','out'],['  💬  Contact: <span style="color:var(--accent)">wa.me/+62895704220904</span>','out'],['','blank'],['<span style="color:#fbbf24">⚡ Response time: usually < 24 hours</span>','out','warn']]);
+        await printLines([['','blank'],['  ✅  <span style="color:#2de2e6">Open for freelance projects</span>','out'],['  ✅  <span style="color:#2de2e6">Available for part-time work</span>','out'],['  ✅  <span style="color:#2de2e6">Open to full-time opportunities</span>','out'],['','blank'],['  💼  Stack: <span style="color:var(--accent2)">React · Laravel · Tailwind · PHP · MySQL</span>','out'],['  📍  Location: <span style="color:rgba(255,255,255,0.6)">Gorontalo, Indonesia 🌴 (remote ok!)</span>','out'],['  💬  Contact: <span style="color:var(--accent)">wa.me/+62895704220904</span>','out'],['','blank'],['<span style="color:#ffc94d">⚡ Response time: usually < 24 hours</span>','out','warn']]);
         showEgg('🚀','Let\'s Build Something!','Kamu baru buka "hire me" command — berarti kamu serius nih! 😄\n\nWahyu available buat project kamu.\nHubungi lewat WhatsApp yuk!',true);
         break;}
 
@@ -275,12 +275,12 @@
         shake();break;}
 
       case cmd==='matrix':{
-        printLine('<span style="color:#4ade80">// initiating matrix protocol...</span>','out','success');await wait(600);
+        printLine('<span style="color:#2de2e6">// initiating matrix protocol...</span>','out','success');await wait(600);
         printLine('<span style="color:rgba(255,255,255,0.3)">// click anywhere to exit</span>','out');await wait(400);startMatrix();
         break;}
 
       case cmd.startsWith('sudo'):{
-        await wait(300);printLine('  [sudo] password for wahyu: ','out');await wait(800);printLine('  <span style="color:#f87171">wahyu is not in the sudoers file.</span>','out','error');printLine('  <span style="color:#fbbf24">This incident will be reported. 👀</span>','out','warn');shake();
+        await wait(300);printLine('  [sudo] password for wahyu: ','out');await wait(800);printLine('  <span style="color:#f87171">wahyu is not in the sudoers file.</span>','out','error');printLine('  <span style="color:#ffc94d">This incident will be reported. 👀</span>','out','warn');shake();
         break;}
 
       case cmd.startsWith('rm'):{
@@ -288,7 +288,7 @@
         break;}
 
       case cmd==='ls'||cmd==='ls -la':{
-        await printLines([['','blank'],['  <span style="color:var(--accent2)">drwxr-xr-x</span>  <span style="color:rgba(255,255,255,0.6)">./skills</span>','out'],['  <span style="color:var(--accent2)">drwxr-xr-x</span>  <span style="color:rgba(255,255,255,0.6)">./projects</span>','out'],['  <span style="color:var(--accent2)">drwxr-xr-x</span>  <span style="color:rgba(255,255,255,0.6)">./experience</span>','out'],['  <span style="color:var(--accent)">-rw-r--r--</span>  <span style="color:rgba(255,255,255,0.6)">about.json</span>','out'],['  <span style="color:var(--accent)">-rw-r--r--</span>  <span style="color:rgba(255,255,255,0.6)">contact.md</span>','out'],['  <span style="color:#f72585">-rw-------</span>  <span style="color:rgba(255,255,255,0.6)">secret.txt</span>','out'],['','blank']]);
+        await printLines([['','blank'],['  <span style="color:var(--accent2)">drwxr-xr-x</span>  <span style="color:rgba(255,255,255,0.6)">./skills</span>','out'],['  <span style="color:var(--accent2)">drwxr-xr-x</span>  <span style="color:rgba(255,255,255,0.6)">./projects</span>','out'],['  <span style="color:var(--accent2)">drwxr-xr-x</span>  <span style="color:rgba(255,255,255,0.6)">./experience</span>','out'],['  <span style="color:var(--accent)">-rw-r--r--</span>  <span style="color:rgba(255,255,255,0.6)">about.json</span>','out'],['  <span style="color:var(--accent)">-rw-r--r--</span>  <span style="color:rgba(255,255,255,0.6)">contact.md</span>','out'],['  <span style="color:#ff7a2f">-rw-------</span>  <span style="color:rgba(255,255,255,0.6)">secret.txt</span>','out'],['','blank']]);
         break;}
 
       case cmd==='pwd':{printLine('  /home/wahyu/portfolio','out');break;}
@@ -297,8 +297,8 @@
 
       case cmd==='ping':{
         await printLines([['  PING portfolio.wahyu.dev','out'],['','blank']]);
-        for(let i=1;i<=4;i++){await wait(300);const ms=Math.floor(Math.random()*8+1);printLine(`  64 bytes from wahyu: icmp_seq=${i} ttl=64 time=<span style="color:#4ade80">${ms}ms</span>`,'out');}
-        await wait(200);printLine('','blank');printLine('  <span style="color:#4ade80">✓ portfolio is live and healthy!</span>','out','success');
+        for(let i=1;i<=4;i++){await wait(300);const ms=Math.floor(Math.random()*8+1);printLine(`  64 bytes from wahyu: icmp_seq=${i} ttl=64 time=<span style="color:#2de2e6">${ms}ms</span>`,'out');}
+        await wait(200);printLine('','blank');printLine('  <span style="color:#2de2e6">✓ portfolio is live and healthy!</span>','out','success');
         break;}
 
       case cmd==='cat secret.txt':{
@@ -312,7 +312,7 @@
         break;}
 
       case cmd==='yes':{
-        printLine('<span style="color:#fbbf24">⚠ warning: don\'t do this on a real terminal</span>','out','warn');
+        printLine('<span style="color:#ffc94d">⚠ warning: don\'t do this on a real terminal</span>','out','warn');
         for(let i=0;i<8;i++){await wait(80);printLine('y','out');}
         await wait(100);printLine('<span style="color:rgba(255,255,255,0.3)">...ok you get the idea</span>','out');
         break;}
@@ -323,7 +323,7 @@
         break;}
 
       case cmd.startsWith('git'):{
-        const gitMap={'git status':'  On branch main — nothing to commit ✅','git log':'  <span style="color:#f72585">commit abc1234</span> — feat: add terminal easter egg\n  <span style="color:#f72585">commit def5678</span> — feat: add parallax system','git push':'  <span style="color:#4ade80">✓ pushed to origin/main</span>'};
+        const gitMap={'git status':'  On branch main — nothing to commit ✅','git log':'  <span style="color:#ff7a2f">commit abc1234</span> — feat: add terminal easter egg\n  <span style="color:#ff7a2f">commit def5678</span> — feat: add parallax system','git push':'  <span style="color:#2de2e6">✓ pushed to origin/main</span>'};
         const out=gitMap[cmd];
         if(out){for(const l of out.split('\n'))printLine(l,'out');}
         else{printLine(`  git: '${args}' not found. did you mean: <span style="color:var(--accent)">commit</span>?`,'out','warn');}
@@ -340,8 +340,8 @@
           ['  🩷  <span style="color:#f472b6;letter-spacing:0.05em">The most special person in the world</span>','out'],
           ['','blank'],
           ['  <span style="color:rgba(255,255,255,0.4)">Name     :</span>  <span style="color:#f472b6;font-weight:700">Miranda 💕</span>','out'],
-          ['  <span style="color:rgba(255,255,255,0.4)">Status   :</span>  <span style="color:#4ade80">● very special</span>','out'],
-          ['  <span style="color:rgba(255,255,255,0.4)">Threat   :</span>  <span style="color:#fbbf24">bikin wahyu senyum sendiri</span>','out'],
+          ['  <span style="color:rgba(255,255,255,0.4)">Status   :</span>  <span style="color:#2de2e6">● very special</span>','out'],
+          ['  <span style="color:rgba(255,255,255,0.4)">Threat   :</span>  <span style="color:#ffc94d">bikin wahyu senyum sendiri</span>','out'],
           ['  <span style="color:rgba(255,255,255,0.4)">Effect   :</span>  <span style="color:#f472b6">heart.exe has stopped working 💘</span>','out'],
           ['','blank'],
           ['  <span style="color:rgba(255,255,255,0.25)">// this file is top secret. you found it. 🤫</span>','out'],
@@ -409,7 +409,7 @@
   // ─── Egg overlay ─────────────────────────────────────────────────────────────
   function showEgg(emoji,title,body,isHireMe=false){
     eggEmoji.textContent=emoji;eggTitle.textContent=title;eggBody.innerHTML=body.replace(/\n/g,'<br>');
-    if(isHireMe)eggBody.innerHTML+=`<br><br><a href="https://wa.me/+62895704220904" style="color:var(--accent);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.75rem;border:1px solid rgba(0,245,212,0.3);padding:0.4rem 1rem;border-radius:4px;display:inline-block;margin-top:0.5rem;transition:all 0.2s" onmouseover="this.style.background='rgba(0,245,212,0.1)'" onmouseout="this.style.background='transparent'">📱 Open WhatsApp</a>`;
+    if(isHireMe)eggBody.innerHTML+=`<br><br><a href="https://wa.me/+62895704220904" style="color:var(--accent);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.75rem;border:1px solid rgba(255,61,154,0.3);padding:0.4rem 1rem;border-radius:4px;display:inline-block;margin-top:0.5rem;transition:all 0.2s" onmouseover="this.style.background='rgba(255,61,154,0.1)'" onmouseout="this.style.background='transparent'">📱 Open WhatsApp</a>`;
     eggOverlay.classList.add('active');
   }
   eggClose.addEventListener('click',()=>eggOverlay.classList.remove('active'));
@@ -446,7 +446,7 @@
       ctx.fillStyle='rgba(0,0,0,0.04)';ctx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
       drops.forEach((y,i)=>{
         const ch=chars[Math.floor(Math.random()*chars.length)];
-        ctx.fillStyle=Math.random()>0.95?'#fff':'rgba(0,245,212,0.8)';
+        ctx.fillStyle=Math.random()>0.95?'#fff':'rgba(255,61,154,0.8)';
         ctx.font='13px JetBrains Mono,monospace';
         ctx.fillText(ch,i*14,y*14);
         if(y*14>matrixCanvas.height&&Math.random()>0.975)drops[i]=0;
@@ -462,7 +462,7 @@
       const c2=matrixCanvas.getContext('2d');
       c2.clearRect(0,0,matrixCanvas.width,matrixCanvas.height);
       matrixCanvas.removeEventListener('click',exitMatrix);
-      printLine('<span style="color:#4ade80">// you escaped the matrix. welcome back, neo. 😎</span>','out','success');
+      printLine('<span style="color:#2de2e6">// you escaped the matrix. welcome back, neo. 😎</span>','out','success');
       printLine('','blank');
     };
     matrixCanvas.addEventListener('click',exitMatrix);

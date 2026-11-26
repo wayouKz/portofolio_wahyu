@@ -478,6 +478,58 @@
     </div>
   </div>
 </section>
+<section id="messages">
+  <div class="msg-layout">
+    <div class="msg-info fade-in">
+      <div class="section-label">// Pesan</div>
+      <h2>Tinggalkan Pesan</h2>
+      <p class="msg-lead">Mau menyapa, kasih saran, atau ngajak kolaborasi? Ketik langsung di HP ini — pesanmu masuk ke inbox saya.</p>
+      <ul class="msg-tips">
+        <li><span>01</span> Isi nama, tulis pesan, tekan ➤</li>
+        <li><span>02</span> Pesan tampil di chat setelah ±1 menit</li>
+        <li><span>03</span> Jangan tulis data pribadi — chat ini publik</li>
+      </ul>
+      <div class="msg-chip">⚡ Biasanya dibalas &lt; 24 jam</div>
+    </div>
+
+    <div class="phone-stage fade-in">
+      <div class="phone" id="phone">
+        <span class="phone-btn b1"></span><span class="phone-btn b2"></span><span class="phone-btn b3"></span><span class="phone-btn b4"></span>
+        <div class="phone-screen">
+          <div class="phone-notch"><i></i></div>
+          <div class="phone-status">
+            <span id="phoneTime">9:41</span>
+            <span class="phone-status-r"><b>5G</b><span class="phone-bars"><i></i><i></i><i></i><i></i></span><span class="phone-batt"><i></i></span></span>
+          </div>
+
+          <div class="phone-head">
+            <span class="phone-back">‹</span>
+            <div class="phone-avatar"><img src="public/img/myphoto.jpeg" alt="" onerror="this.style.display='none';this.parentNode.textContent='W'" /></div>
+            <div class="phone-contact"><b>Wahyu</b><small><span class="phone-online"></span>online · <span id="msgTotal">0 pesan</span></small></div>
+            <span class="phone-call">☎</span>
+          </div>
+
+          <div class="msg-list" id="msgList"><div class="msg-empty">memuat pesan…</div></div>
+
+          <form class="phone-compose" id="msgForm" autocomplete="off" novalidate>
+            <div class="phone-name">
+              <span>Dari:</span>
+              <input type="text" id="msgName" maxlength="30" placeholder="nama kamu" required />
+              <span class="msg-count" id="msgCount">0/280</span>
+            </div>
+            <div class="phone-input-row">
+              <textarea id="msgText" maxlength="280" rows="1" placeholder="Ketik pesan…" required></textarea>
+              <button type="submit" class="phone-send" id="msgSend" aria-label="Kirim pesan">➤</button>
+            </div>
+            <input type="text" id="msgWebsite" class="msg-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="msg-status" id="msgStatus" role="status" aria-live="polite"></div>
+          </form>
+          <div class="phone-home"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="socials-section" >
   <div class="section-header fade-in">
     <div class="section-label">// My Project</div>
